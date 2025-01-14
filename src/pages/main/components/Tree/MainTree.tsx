@@ -116,7 +116,7 @@ const Node: FC<NodeProps> = ({ position, color, hoverColor, label, id_node, info
             </Card>
 
             </>}>
-                <div style={{border: '', position: "relative", zIndex: "2", margin: "0px", color:'white', borderRadius: "2rem", padding: '18px'}}>
+                <div style={{border: '', position: "relative", zIndex: "2", margin: "0px", color:'white', borderRadius: "2rem", padding: '19px'}}>
                     
                 </div>
             </Tooltip>
