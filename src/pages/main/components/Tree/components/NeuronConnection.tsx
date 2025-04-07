@@ -163,6 +163,7 @@ const NeuralConnection: React.FC<ConnectionProps> = ({
   // console.log(points)
   let copy_points = points;
   copy_points = []
+  console.log(copy_points)
   
   // Animar el shader
   useFrame(({ clock }) => {
