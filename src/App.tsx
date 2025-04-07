@@ -5,6 +5,7 @@ import './App.css'
 import MainPage from './pages/main/MainPage';
 
 import { Spin } from 'antd';
+// import TestNeuron from './pages/main/components/TestNeuron';
 
 const FallbackLoader = () => (
   <div
@@ -27,6 +28,7 @@ function App() {
     <>
     <Suspense fallback={<FallbackLoader/>}>
       <MainPage/>
+      {/* <TestNeuron /> */}
     </Suspense>
     </>
   )

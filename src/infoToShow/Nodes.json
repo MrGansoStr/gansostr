@@ -3,7 +3,7 @@
     "nodes": [
       { "id": "ds1", "name": "Data", "colorType": "default" },
       { "id": "ds2", "name": "Science", "colorType": "default" },
-      { "id": "ds3", "name": "Tecnologías Y Herramientas", "colorType": "tech" },
+      { "id": "ds3", "name": "Cassandra", "colorType": "tech" },
       { "id": "d1", "name": "Recopilación", "parent": "ds1", "colorType": "skill" },
       { "id": "d2", "name": "Almacenamiento", "parent": "ds1", "colorType": "skill" },
       { "id": "d3", "name": "Procesamiento", "parent": "ds1", "colorType": "skill" },
@@ -49,12 +49,12 @@
 
     ],
     "colors_node": {
-        "me": {"color": "#BB4040"},
-        "exp": {"color": "#08c" },
-        "tech": {"color": "#58C46E"},
-        "proy": {"color": "#F1F57C"},
-        "skill": {"color": "#80DDF7"},
-        "model": {"color": "#D66AF7"}
+        "me": {"color": "#800404"},
+        "exp": {"color": "#012233" },
+        "tech": {"color": "#194f24"},
+        "proy": {"color": "#6b6e17"},
+        "model": {"color": "#5f2e6e"},
+        "skill": {"color": "#254e59"}
     },
     "connections": [
       { "from": "d1a", "to": "t1", "type": "relation" },
@@ -91,7 +91,26 @@
       { "from": "exp1", "to": "tech7", "type": "relation" },
       { "from": "exp1", "to": "tech12", "type": "relation" },
       { "from": "exp1", "to": "tech4", "type": "relation" },
-      { "from": "exp1", "to": "tech1", "type": "relation" }
+      { "from": "exp1", "to": "tech1", "type": "relation" },
+      { "from": "exp1", "to": "exp2", "type": "relation"},
+      { "from": "me1", "to": "exp3", "type": "relation"},
+      { "from": "me1", "to": "exp4", "type": "relation"},
+      { "from": "exp1", "to": "s3", "type": "relation"},
+      { "from": "exp1", "to": "d2a", "type": "relation"},
+      { "from": "exp1", "to": "d2b", "type": "relation"},
+      { "from": "exp1", "to": "d2", "type": "relation"},
+      { "from": "me1", "to": "ds3", "type": "relation"},
+      { "from": "me1", "to": "d3", "type": "relation"},
+      { "from": "exp1", "to": "d1a", "type": "relation"},
+      { "from": "me1", "to": "d3a", "type": "relation"},
+      { "from": "me1", "to": "d1", "type": "relation"},
+      { "from": "me1", "to": "d3b", "type": "relation"},
+      { "from": "d1", "to": "d3c", "type": "relation"},
+      { "from": "tech10", "to": "exp1", "type": "relation"},
+      { "from": "exp2", "to": "d1d1", "type": "relation"},
+      { "from": "ds1", "to": "me1", "type": "relation"},
+      { "from": "ds2", "to": "me1", "type": "relation"}
+      
     ],
     "connections_v2": 
     [
