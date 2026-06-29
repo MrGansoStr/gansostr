@@ -43,15 +43,7 @@ const Legend = () => {
 
   return (
     <div id="legend_sidebar">
-      <div className="legend_header">
-        <div className="legend_header-icon">
-          <BulbOutlined />
-        </div>
-        <div className="legend_header-text">
-          <h2>Leyenda</h2>
-          <span>Categorías del mapa</span>
-        </div>
-      </div>
+      <h2 className="legend_header">Portafolio</h2>
 
       <div className="legend_list">
         {data_legend.map((item) => (
