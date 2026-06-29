@@ -118,8 +118,8 @@ function nonMaximumSuppression(
 // --- Componente React ---
 export const ModelSkin: React.FC = () => {
   // --- Estados ---
-  const [session, setSession] = useState<any | null>(null);
-  const [_output, setOutput] = useState<Float32Array | null>(null); // Salida cruda (opcional)
+  const [session, setSession] = useState<Awaited<ReturnType<typeof ort.InferenceSession.create>> | null>(null);
+  const [, setOutput] = useState<Float32Array | null>(null); // Salida cruda (opcional)
   const [loading, setLoading] = useState({ session: true, inference: false });
   const [error, setError] = useState<string | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
@@ -183,10 +183,10 @@ export const ModelSkin: React.FC = () => {
              console.warn('enumerateDevices() no soportado.');
         }
 
-      } catch (err: any) {
+      } catch (err: unknown) {
          if (isMounted) {
              console.error('Error cargando recursos:', err);
-             setError(`Error cargando: ${err.message}`);
+             setError(`Error cargando: ${err instanceof Error ? err.message : String(err)}`);
          }
       } finally {
          if (isMounted) {
@@ -244,9 +244,9 @@ export const ModelSkin: React.FC = () => {
           });
         };
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error accediendo a la cámara:', err);
-      setError(`Error cámara: ${err.message}`);
+      setError(`Error cámara: ${err instanceof Error ? err.message : String(err)}`);
       stopCameraStream();
     }
   };
@@ -299,9 +299,9 @@ export const ModelSkin: React.FC = () => {
     try {
       const inputData = preprocessImage(ctx, canvas.width, canvas.height);
       await runInference(inputData); // runInference actualizará processedDetections
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error preprocesando o en inferencia:", err);
-      setError(`Error procesando: ${err.message}`);
+      setError(`Error procesando: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setLoading(prev => ({ ...prev, inference: false }));
     }
@@ -400,9 +400,9 @@ export const ModelSkin: React.FC = () => {
       }));
       setProcessedDetections(finalDetectionsWithNames);
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error en inferencia/post-proc:', err);
-      setError(`Error inferencia: ${err.message}`);
+      setError(`Error inferencia: ${err instanceof Error ? err.message : String(err)}`);
       setOutput(null);
       setProcessedDetections([]);
     }

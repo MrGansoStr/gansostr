@@ -14,7 +14,7 @@ interface NodeProps {
 
 const Node: FC<NodeProps> = ({ position, color, hoverColor, label  }) => {
   const [hovered, setHovered] = useState(false);
-  const [_tooltipVisible, setTooltipVisible] = useState(false);
+  const [, setTooltipVisible] = useState(false);
   const meshRef = useRef<THREE.Mesh>(null);
   console.log("NODO HOVER",hovered)
 

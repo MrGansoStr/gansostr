@@ -9,7 +9,7 @@ import Proy2 from "./Proy2";
 import Proy3 from "./Proy3";
 
 
-export const ListComponents:{[key:string]: any, } = {
+export const ListComponents: { [key: string]: React.ReactElement } = {
     "me1": <MeComponent/>,
     "exp1": <Exp1/>,
     "exp2": <Exp2/>,

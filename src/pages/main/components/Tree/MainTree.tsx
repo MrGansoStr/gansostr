@@ -12,8 +12,8 @@ import NeuronConnection from './components/NeuronConnection';
 
 interface NodeProps {
   position: [number, number, number];
-  id_connected?: [any];
-  id_node?: any;
+  id_connected?: [string];
+  id_node: string;
   legend_code?: string;
   color: string;
   hoverColor: string;
@@ -47,8 +47,8 @@ useEffect(() => {
   // Actualizamos el color de cada malla cuando cambia el estado hovered.
   useEffect(() => {
     if (obj) { 
-      obj.traverse((child:any) => {
-      if ('isMesh' in child && child.isMesh) {
+      obj.traverse((child: THREE.Object3D) => {
+      if (child instanceof THREE.Mesh) {
         child.material = new THREE.MeshStandardMaterial({
         color: hovered ? hoverColor : color,
         metalness: 0.2,

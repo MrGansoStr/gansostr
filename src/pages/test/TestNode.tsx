@@ -1,10 +1,11 @@
 import { useState, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
+import * as THREE from 'three';
 
-const Node = ({ position, color, hoverColor }: {position: any, color: any, hoverColor: any}) => {
+const Node = ({ position, color, hoverColor }: {position: [number, number, number], color: string, hoverColor: string}) => {
   const [hovered, setHovered] = useState(false);
-  const meshRef = useRef<any>();
+  const meshRef = useRef<THREE.Mesh>(null);
 
   return (
     <>

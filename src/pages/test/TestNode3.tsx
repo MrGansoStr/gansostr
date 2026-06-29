@@ -20,7 +20,7 @@ const Node: FC<NodeProps> = ({ position, color, hoverColor, label }) => {
 
   // Retraso para mostrar el tooltip
   useEffect(() => {
-    let timeout: any;
+    let timeout: ReturnType<typeof setTimeout> | undefined;
     if (hovered) {
       timeout = setTimeout(() => setShowTooltip(true), 1000); // Retraso de 200ms
     } else {

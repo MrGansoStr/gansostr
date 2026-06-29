@@ -171,8 +171,8 @@ const NeuralConnection: React.FC<ConnectionProps> = ({
   });
   
   // Crear gradiente de colores a lo largo de la conexión
-  const baseColor = new THREE.Color(color);
   const gradientColors = useMemo(() => {
+    const baseColor = new THREE.Color(color);
     const colors = [];
     const segments = 20;
     

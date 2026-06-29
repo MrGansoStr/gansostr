@@ -57,7 +57,7 @@ const items: CollapseProps['items'] = [
     children: <List
       dataSource={data_legend}
       size="small"
-      renderItem={(item, _index) => (
+      renderItem={(item) => (
         <List.Item style={{ color: item.color }}>
           {item.icon} {item.name}
         </List.Item>
@@ -69,7 +69,7 @@ const items: CollapseProps['items'] = [
 const Legend = () => {
   const [legendOpen, setLegendOpen] = useState(true);
 
-  const handleLegendOpen = (_e: any) => {
+  const handleLegendOpen = () => {
     setLegendOpen(!legendOpen)
   }
 

@@ -1,15 +1,15 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, type ReactNode, type Dispatch, type SetStateAction } from "react";
 
 interface ContextType {
   modalOpen: boolean;
-  setModalOpen: Function;
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
   idComponent: string;
-  setIdComponent: Function;
+  setIdComponent: Dispatch<SetStateAction<string>>;
 }
 
 const ContextMainPage = createContext<ContextType | undefined>(undefined);
 
-export const ContextCompMainPage = ({ children }: { children: any }) => {
+export const ContextCompMainPage = ({ children }: { children: ReactNode }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [idComponent, setIdComponent] = useState("");
 

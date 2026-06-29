@@ -112,7 +112,7 @@ export const CustomCupyIcon = (props: Partial<CustomIconComponentProps>) => (
 );
 
 export const CustomTornadoIcon = (props: Partial<CustomIconComponentProps>) => (
-    <Icon component={(svgProps:any) => <TornadoIcon {...svgProps} />} {...props} />
+    <Icon component={(svgProps: React.SVGProps<SVGSVGElement>) => <TornadoIcon {...svgProps} />} {...props} />
 );
 
 export const CustomPytorchIcon = (props: Partial<CustomIconComponentProps>) => (
@@ -124,16 +124,16 @@ export const CustomFlaskIcon = (props: Partial<CustomIconComponentProps>) => (
 );
 
 export const CustomReactIcon = (props: Partial<CustomIconComponentProps>) => (
-    <Icon component={(svgProps:any) => <ReactIcon {...svgProps} />} {...props} />
+    <Icon component={(svgProps: React.SVGProps<SVGSVGElement>) => <ReactIcon {...svgProps} />} {...props} />
 );
 
 export const CustomPythonIcon = (props: Partial<CustomIconComponentProps>) => (
-    <Icon component={(svgProps:any) => <PythonLogo {...svgProps} />} {...props} />
+    <Icon component={(svgProps: React.SVGProps<SVGSVGElement>) => <PythonLogo {...svgProps} />} {...props} />
 );
 
 export const CustomGithubIcon = (props: Partial<CustomIconComponentProps>) => (
-    <Icon component={(svgProps:any) => <GithubIcon {...svgProps} />} {...props} />
+    <Icon component={(svgProps: React.SVGProps<SVGSVGElement>) => <GithubIcon {...svgProps} />} {...props} />
 );
 export const CustomNodeJSIcon = (props: Partial<CustomIconComponentProps>) => (
-    <Icon component={(svgProps:any) => <NodeJSIcon {...svgProps} />} {...props} />
+    <Icon component={(svgProps: React.SVGProps<SVGSVGElement>) => <NodeJSIcon {...svgProps} />} {...props} />
 );

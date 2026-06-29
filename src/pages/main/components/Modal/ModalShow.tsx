@@ -6,7 +6,7 @@ import { ListComponents } from "./components/ListComponents";
 import AllTreeV2Json from "../../../../infoToShow/AllTreev2.json"
 import { CompressOutlined, ExpandAltOutlined} from "@ant-design/icons";
 
-const HelpHeaderControls = ({expanded, handleExpand} : {expanded: boolean, handleExpand: Function}) => {
+const HelpHeaderControls = ({expanded, handleExpand} : {expanded: boolean, handleExpand: () => void}) => {
   const style_icon = {
     fontSize: "15px"
   }
