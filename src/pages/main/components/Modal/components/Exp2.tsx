@@ -15,15 +15,6 @@ import Img4 from "./exp2_assets/admin.png"
 
 import "./FixImages.css"
 
-// const contentStyle: React.CSSProperties = {
-  // height: "160px",
-  // width: "200px",
-  // color: "#fff",
-  // lineHeight: "160px",
-  // textAlign: "center",
-  // background: "#364d79",
-// };
-
 const Exp2 = () => {
   return (
     <div>
@@ -149,7 +140,6 @@ const Exp2 = () => {
             <CustomPythonIcon style={{ fontSize: "40px" }} />
             <CustomReactIcon style={{ fontSize: "40px" }} />
             <CustomTypescriptIcon style={{ fontSize: "40px" }} />
-            {/* <FlaskIconWithProps style={{fontSize: "35px"}}/> */}
             <CustomFlaskIcon style={{ fontSize: "40px" }} />
             <CustomPytorchIcon style={{ fontSize: "40px" }} />
             <CustomMysqlIcon style={{ fontSize: "40px" }} />

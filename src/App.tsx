@@ -1,11 +1,8 @@
 import { Suspense } from 'react'
 
-import './App.css'
-
 import MainPage from './pages/main/MainPage';
 
 import { Spin } from 'antd';
-// import TestNeuron from './pages/main/components/TestNeuron';
 
 const FallbackLoader = () => (
   <div
@@ -14,7 +11,6 @@ const FallbackLoader = () => (
       justifyContent: 'center',
       alignItems: 'center',
       height: '100vh',
-      // backgroundColor: '#f0f2f5',
     }}
   >
     <Spin size="large" />
@@ -28,7 +24,6 @@ function App() {
     <>
     <Suspense fallback={<FallbackLoader/>}>
       <MainPage/>
-      {/* <TestNeuron /> */}
     </Suspense>
     </>
   )

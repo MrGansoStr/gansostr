@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Modal } from "antd";
 import { UseContextMainPage } from "../../Context/ContextMainPage";
-// import InfoBasic from "./components/InfoBasic";
 import "./ModalFix.css"
 import { ListComponents } from "./components/ListComponents";
 import AllTreeV2Json from "../../../../infoToShow/AllTreev2.json"
@@ -30,23 +29,11 @@ const HelpHeaderControls = ({expanded, handleExpand} : {expanded: boolean, handl
 const ModalShow: React.FC = () => {
   const { modalOpen, setModalOpen, idComponent } = UseContextMainPage();
   const [fullScreen ,setFullScreen] = useState(false);
-  // console.log(ListComponents, idComponent)
   const dict_nodes_description: {[key:string] : {summary: string, all_info: string, more_info?: boolean}} = AllTreeV2Json.NodesDescription;
   const handleFullScreen = () => {
-    // e.preventDeafult();
     setFullScreen(!fullScreen);
 
   }
-  // useEffect(() => {
-  //   const modalRoot = document.querySelector(
-  //     ".ant-modal-root.css-dev-only-do-not-override-10tp9dk"
-  //   ) as HTMLElement;
-  //   if (modalRoot) {
-  //     modalRoot.style.position = "relative";
-  //     modalRoot.style.zIndex = "16693394";
-  //   }
-  //   return () => {}
-  // }, []);
   
   return (
     <>
@@ -58,8 +45,6 @@ const ModalShow: React.FC = () => {
         onCancel={() => setModalOpen(false)}
         footer=""
         className={fullScreen ? "modalFullScreen": ""}
-
-        // closeIcon={<CloseOutlined style={{fontSize: "20px", bottom: "0px"}} />}
       >
         <div className={fullScreen ? "modal-content-FullScreen" : ""} >
           <HelpHeaderControls expanded={fullScreen} handleExpand={handleFullScreen}/>

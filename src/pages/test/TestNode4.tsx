@@ -28,14 +28,6 @@ const Node: FC<NodeProps> = ({ position, color, hoverColor, label  }) => {
     setTooltipVisible(false);
   };
 
-  // const handleTooltipMouseEnter = () => {
-  //   setTooltipVisible(true);
-  // };
-
-  // const handleTooltipMouseLeave = () => {
-  //   setTooltipVisible(true);
-  // };
-
   return (
     <mesh
       position={position}
@@ -52,36 +44,6 @@ const Node: FC<NodeProps> = ({ position, color, hoverColor, label  }) => {
                     test
                 </div>
             </Tooltip>
-          {/* <div
-            onMouseEnter={handleTooltipMouseEnter}
-            onMouseLeave={handleTooltipMouseLeave}
-            style={{
-                border: '1px solid white',
-            //   backgroundColor: 'white',
-            //   padding: '10px',
-              borderRadius: '5px',
-              boxShadow: '0 2px 5px rgba(0, 0, 0, 0.3)',
-              fontSize: '14px',
-              textAlign: 'center',
-              color: 'black',
-            }}
-          >
-            <p>{label}</p>
-            <button
-              onClick={onButtonClick}
-              style={{
-                marginTop: '5px',
-                padding: '5px 10px',
-                border: 'none',
-                borderRadius: '3px',
-                backgroundColor: '#007bff',
-                color: 'white',
-                cursor: 'pointer',
-              }}
-            >
-              Action
-            </button>
-          </div> */}
         </Html>
       )}
     </mesh>

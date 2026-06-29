@@ -50,28 +50,24 @@ const MeComponent = () => {
   );
 };
 
-// Definir los estilos como CSSProperties
 export const stylesAllMoreInfo: { [key: string]: React.CSSProperties } = {
   container: {
     fontFamily: "Arial, sans-serif",
     padding: "20px",
     margin: "auto",
     maxWidth: "800px",
-    textAlign: "center" as const, // Ajustar el tipo correctamente
-    // backgroundColor: "#f9f9f9",
+    textAlign: "center" as const,
     color: "white",
     borderRadius: "10px",
     boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
   },
   name: {
     fontSize: "2rem",
-    // color: "#333",
     color: "white",
   },
   description: {
     fontSize: "1rem",
     color: "#888",
-    // color:"white",
     lineHeight: "1.6",
     marginTop: "10px",
   },
@@ -81,7 +77,7 @@ export const stylesAllMoreInfo: { [key: string]: React.CSSProperties } = {
   socialLink: {
     margin: "0 10px",
     textDecoration: "none",
-    color: "#0077b5", // Azul LinkedIn
+    color: "#0077b5",
     fontWeight: "bold",
   },
   image: {

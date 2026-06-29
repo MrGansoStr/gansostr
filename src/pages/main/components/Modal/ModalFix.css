@@ -1,15 +1,10 @@
-
 .ant-modal-root  {
     position: relative !important;
     z-index: 16693394 !important;
 }
-/* .css-dev-only-do-not-override-10tp9dk {
-
-} */
 
 #icon-fullscreen {
     color: #8b8b8b;
-    /* color: red; */
 }
 
 #icon-fullscreen :hover{
@@ -22,11 +17,4 @@
     width: 100vw !important;
 }
 .modal-content-FullScreen{
-    /* transition: cubic-bezier(0.215, 0.610, 0.355, 1); */
-    /* height: 100% !important; */
-
-    /* width: 100vh !important; */
 }
-/* #div-icon-fullscreen:hover {
-    background-color: red;
-} */

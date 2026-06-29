@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-// import * as THREE from 'three';
 
 const Node = ({ position, color, hoverColor }: {position: any, color: any, hoverColor: any}) => {
   const [hovered, setHovered] = useState(false);
@@ -15,7 +14,6 @@ const Node = ({ position, color, hoverColor }: {position: any, color: any, hover
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
     >
-      {/* <div>test</div> */}
       <sphereGeometry args={[0.1, 32, 32]} />
       <meshStandardMaterial color={hovered ? hoverColor : color} />
     </mesh>

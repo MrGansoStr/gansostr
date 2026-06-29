@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import * as ort from 'onnxruntime-web';
 import { Button, Typography } from 'antd';
-// import { InferenceSession } from "onnxruntime-web"; 
 
 // --- Interfaz para Detecciones Finales ---
 interface FinalDetection {
@@ -381,7 +380,6 @@ export const ModelSkin: React.FC = () => {
 
            // Añadir un chequeo básico de coordenadas (opcional pero útil)
            if (x1 < -MODEL_INPUT_WIDTH || y1 < -MODEL_INPUT_HEIGHT || x2 > 2*MODEL_INPUT_WIDTH || y2 > 2*MODEL_INPUT_HEIGHT || w <= 0 || h <= 0) {
-               // console.warn(`Coordenadas sospechosas omitidas en propuesta ${i}: [${x1.toFixed(0)}, ${y1.toFixed(0)}, ${x2.toFixed(0)}, ${y2.toFixed(0)}] raw box: [${cx.toFixed(2)}, ${cy.toFixed(2)}, ${w.toFixed(2)}, ${h.toFixed(2)}]`);
                continue; // Omitir si las coordenadas son claramente inválidas
            }
 
@@ -457,9 +455,6 @@ export const ModelSkin: React.FC = () => {
         const label = `${className} (${(score * 100).toFixed(1)}%)`;
         const textX = drawX + 3;
         const textY = Math.max(15, drawY - 5);
-        // const textWidth = ctx.measureText(label).width;
-        // ctx.fillStyle = 'rgba(255, 255, 255, 0.7)'; // Fondo opcional
-        // ctx.fillRect(textX - 3, textY - 12, textWidth + 6, 16);
         ctx.fillStyle = colors[colorIndex];
         ctx.fillText(label, textX, textY);
       });
@@ -542,16 +537,8 @@ export const ModelSkin: React.FC = () => {
                </pre>
            </details>
        )}
-       {/* {!loading.inference && output && (
-           <details style={{marginTop: '10px'}}>
-               <summary>Ver Salida Cruda del Modelo (Primeros 50)</summary>
-               <pre style={{maxWidth: '800px', overflowX: 'auto', fontSize: '10px', backgroundColor: '#f0f0f0', padding: '5px'}}>
-                   {Array.from(output).slice(0, 50).map(v => v.toFixed(4)).join(", ")}... ({output.length} total)
-               </pre>
-           </details>
-       )} */}
-       <Typography.Title>Resultados Modelo | Dataset HAM10000 </Typography.Title>
-       <Typography.Text>El modelo fue entrenado con Modelo Yolo12n con oversampling para la clase de df (dermatofibroma), con un total de 50 epocas, batch size 16.</Typography.Text>
+        <Typography.Title>Resultados Modelo | Dataset HAM10000 </Typography.Title>
+        <Typography.Text>El modelo fue entrenado con Modelo Yolo12n con oversampling para la clase de df (dermatofibroma), con un total de 50 epocas, batch size 16.</Typography.Text>
 
        <div style={{padding: 5}}>
        <img src='/models/PR_curve.png' alt='Precision Recall' width="100%"/>

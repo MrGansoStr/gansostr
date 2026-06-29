@@ -152,15 +152,12 @@ const NeuralConnection: React.FC<ConnectionProps> = ({
         length: branchLength,
         startPoint: startPointCopy,
         startIdx,
-        // color: "rgb(92, 62, 115)"
         color: branchColor.getStyle()
       });
-      // console.log(branchColor.getStyle())
     }
     
     return { tubePath, points, branches };
   }, [start, end, thickness, color, branchDensity]);
-  // console.log(points)
   let copy_points = points;
   copy_points = []
   console.log(copy_points)
@@ -180,7 +177,6 @@ const NeuralConnection: React.FC<ConnectionProps> = ({
     const segments = 20;
     
     for (let i = 0; i <= segments; i++) {
-      // const _t = i / segments;
       const c = baseColor.clone();
       // Pequeñas variaciones en el color
       c.r += (Math.random() - 0.5) * 0.1;

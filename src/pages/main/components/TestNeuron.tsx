@@ -1,8 +1,6 @@
-// src/App.tsx
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
-// import Loader from './components/NeuronModel'
 
 import LoaderNeuron from "./LoaderNeuron"
 
