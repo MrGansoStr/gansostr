@@ -20,10 +20,22 @@
 }
 
 #main_sider {
-  background: rgba(25, 25, 25, 0.95) !important;
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
-  z-index: 10;
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  height: 100vh;
+  background: rgba(25, 25, 25, 0.55) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 4px 0 28px rgba(0, 0, 0, 0.35);
+  z-index: 20;
+  transition: transform 0.3s ease;
+}
+
+#main_sider.ant-layout-sider-collapsed {
+  transform: translateX(-100%);
 }
 
 #main_sider .ant-layout-sider-children {
