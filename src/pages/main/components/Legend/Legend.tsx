@@ -3,7 +3,7 @@ import type { CollapseProps } from 'antd';
 import { Collapse } from 'antd';
 
 import "./StylesLegend.css";
-// import MaletinIcon from "./assets/icons8-maletín.svg";
+
 import {
   BulbOutlined,
   DownOutlined,
@@ -39,12 +39,12 @@ const data_legend = [
   },
   {
     name: "Modelos",
-    icon: <RobotOutlined style={{color: "#D66AF7"}} />,
+    icon: <RobotOutlined style={{ color: "#D66AF7" }} />,
     color: "#D66AF7"
   },
   {
     name: "Habiliadades",
-    icon: <ToolOutlined style={{color: "#80DDF7"}} />,
+    icon: <ToolOutlined style={{ color: "#80DDF7" }} />,
     color: "#80DDF7"
   }
 ];
@@ -55,48 +55,34 @@ const items: CollapseProps['items'] = [
     key: '1',
     label: 'Leyenda',
     children: <List
-          dataSource={data_legend}
-          size="small"
-          renderItem={(item, _index) => (
-            <List.Item style={{ color: item.color }}>
-
-              {item.icon} {item.name}
-            </List.Item>
-          )}
-          />,
+      dataSource={data_legend}
+      size="small"
+      renderItem={(item, _index) => (
+        <List.Item style={{ color: item.color }}>
+          {item.icon} {item.name}
+        </List.Item>
+      )}
+    />,
   }
 ];
 
 const Legend = () => {
   const [legendOpen, setLegendOpen] = useState(true);
 
-  const handleLegendOpen = (_e:any) => {
-    // console.log(e)
+  const handleLegendOpen = (_e: any) => {
     setLegendOpen(!legendOpen)
   }
-  
+
   return (
     <div id="legend_main">
-      <Collapse 
-      defaultActiveKey={['1']} 
-      ghost 
-      items={items}
-      expandIcon={() => legendOpen ? <DownOutlined /> : <UpOutlined />}
-      onChange={handleLegendOpen} 
+      <Collapse
+        defaultActiveKey={['1']}
+        ghost
+        items={items}
+        expandIcon={() => legendOpen ? <DownOutlined /> : <UpOutlined />}
+        onChange={handleLegendOpen}
       >
-      {/* <Card title="Legenda"> */}
-        {/* <List
-          dataSource={data_legend}
-          size="small"
-          renderItem={(item, index) => (
-            <List.Item style={{ color: item.color }}>
-
-              {item.icon} {item.name}
-            </List.Item>
-          )}
-          /> */}
-          </Collapse>
-      {/* </Card> */}
+      </Collapse>
     </div>
   );
 };
