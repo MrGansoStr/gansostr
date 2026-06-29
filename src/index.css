@@ -14,3 +14,15 @@
   display: flex;
   padding: 5px;
 }
+
+#main_layout {
+  height: 100vh;
+}
+
+#main_sider {
+  background-color: #191919 !important;
+}
+
+#main_sider .ant-layout-sider-trigger {
+  background-color: #242424;
+}

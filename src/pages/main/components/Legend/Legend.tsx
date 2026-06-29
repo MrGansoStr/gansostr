@@ -1,20 +1,15 @@
 import { List } from "antd";
-import type { CollapseProps } from 'antd';
-import { Collapse } from 'antd';
 
 import "./StylesLegend.css";
 
 import {
   BulbOutlined,
-  DownOutlined,
   FieldTimeOutlined,
   PythonOutlined,
   RobotOutlined,
   ToolOutlined,
-  UpOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
 
 const data_legend = [
   {
@@ -49,40 +44,19 @@ const data_legend = [
   }
 ];
 
-
-const items: CollapseProps['items'] = [
-  {
-    key: '1',
-    label: 'Leyenda',
-    children: <List
-      dataSource={data_legend}
-      size="small"
-      renderItem={(item) => (
-        <List.Item style={{ color: item.color }}>
-          {item.icon} {item.name}
-        </List.Item>
-      )}
-    />,
-  }
-];
-
 const Legend = () => {
-  const [legendOpen, setLegendOpen] = useState(true);
-
-  const handleLegendOpen = () => {
-    setLegendOpen(!legendOpen)
-  }
-
   return (
-    <div id="legend_main">
-      <Collapse
-        defaultActiveKey={['1']}
-        ghost
-        items={items}
-        expandIcon={() => legendOpen ? <DownOutlined /> : <UpOutlined />}
-        onChange={handleLegendOpen}
-      >
-      </Collapse>
+    <div id="legend_sidebar">
+      <h2 className="legend_title">Leyenda</h2>
+      <List
+        dataSource={data_legend}
+        size="small"
+        renderItem={(item) => (
+          <List.Item style={{ color: item.color }}>
+            {item.icon} {item.name}
+          </List.Item>
+        )}
+      />
     </div>
   );
 };

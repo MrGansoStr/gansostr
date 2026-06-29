@@ -200,7 +200,7 @@ const Scene: FC = () => {
 
 const MainTree: FC = () => {
   return (
-    <div style={{ height: '90vh', width: '99vw', border: "" }}>
+    <div style={{ height: '90vh', width: '100%', border: "" }}>
       <Scene />
     </div>
   );
