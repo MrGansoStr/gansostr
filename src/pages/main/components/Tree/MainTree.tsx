@@ -1,5 +1,5 @@
-import  { useState, useRef, FC, useEffect } from 'react';
-import { Canvas,  useLoader } from '@react-three/fiber';
+import  { useState, useRef, FC } from 'react';
+import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Html, } from '@react-three/drei';
 import * as THREE from 'three';
 import { Button, Card, Tooltip } from 'antd';
@@ -7,7 +7,7 @@ import { UseContextMainPage } from '../../Context/ContextMainPage';
 import { gen_positions } from '../../utils/node.utils';
 import DataScienceJson from "../../../../infoToShow/Nodes.json"
 import DescriptionsJson from "../../../../infoToShow/AllTreev2.json"
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
+import Bubble from './components/Neuron';
 import NeuronConnection from './components/NeuronConnection';
 
 interface NodeProps {
@@ -20,6 +20,7 @@ interface NodeProps {
   label: string;
   info?: {summary: string, all_info: string, more_info?:boolean}
   onButtonClick?: () => void;
+  seed?: number;
 }
 
 const Node: FC<NodeProps> = ({
@@ -29,40 +30,11 @@ const Node: FC<NodeProps> = ({
   label,
   id_node,
   info,
+  seed,
 }) => {
   const { setModalOpen, setIdComponent } = UseContextMainPage()
   const [hovered, setHovered] = useState(false)
   const groupRef = useRef<THREE.Group>(null)
-
-  const originalObj = useLoader(OBJLoader, '/Neuron.obj')
-  const [obj, setObj] = useState<THREE.Object3D | null>(null)
-
-useEffect(() => {
-  if (originalObj) {
-    const cloned = originalObj.clone(true)
-    setObj(cloned)
-  }
-}, [originalObj])
-
-  // Actualizamos el color de cada malla cuando cambia el estado hovered.
-  useEffect(() => {
-    if (obj) { 
-      obj.traverse((child: THREE.Object3D) => {
-      if (child instanceof THREE.Mesh) {
-        child.material = new THREE.MeshStandardMaterial({
-        color: hovered ? hoverColor : color,
-        metalness: 0.2,
-        roughness: 0.5,
-        map: null,
-        normalMap: null,
-        roughnessMap: null,
-        displacementMap: null,
-      });
-      }
-    })
-    }
-    
-  }, [hovered, color, hoverColor, obj])
 
   const handlePointerOver = () => {
     setHovered(true)
@@ -84,9 +56,13 @@ useEffect(() => {
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
     >
-      {/* Se muestra el modelo OBJ cargado */}
-      {obj && <primitive object={obj} scale={1.7} />}
-      
+      <Bubble
+        color={color}
+        hoverColor={hoverColor}
+        hovered={hovered}
+        seed={seed}
+      />
+
       {/* Tooltip con información */}
       <Html position={[0, 0, 0]} center style={{ zIndex: "1", position: "absolute" }}>
         <Tooltip
@@ -135,7 +111,7 @@ const Scene: FC = () => {
 
   const nodes_all = DataScienceJson.DataScience.nodes;
   const connections_all = DataScienceJson.DataScience.connections;
-  
+
   random_positions.forEach(value => {
     nodeData.push({
       position: value as [number, number, number],
@@ -145,17 +121,17 @@ const Scene: FC = () => {
       info: dict_nodes_description[nodes_all[help_index].id]
     });
     dict_nodes[nodes_all[help_index].id] = {
-      position: value as [number, number, number], 
-      label: nodes_all[help_index].name, 
+      position: value as [number, number, number],
+      label: nodes_all[help_index].name,
     };
     help_index++;
   })
 
-  
+
   const handleNodeAction = (label: string) => {
     alert(`Button clicked on ${label}`);
   };
-  console.log(nodeData)
+
   return (
     <Canvas camera={{position: [90, 90, 25], fov: 30}}>
       <ambientLight intensity={20} />
@@ -179,6 +155,7 @@ const Scene: FC = () => {
           hoverColor="white"
           label={node.label}
           onButtonClick={() => handleNodeAction(node.label)}
+          seed={index}
           />
           ))}
 
@@ -186,7 +163,7 @@ const Scene: FC = () => {
         connections_all.map((connection, index) => (
           <NeuronConnection key={index} start={dict_nodes[connection.from].position} end={dict_nodes[connection.to].position}
           color="white"
-          branchDensity={0.2} 
+          branchDensity={0.2}
           thickness={0.3}
           />
         ))
