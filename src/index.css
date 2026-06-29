@@ -21,25 +21,30 @@
 
 #main_sider {
   position: absolute !important;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  height: 100vh;
+  top: 14px;
+  left: 14px;
+  bottom: 14px;
+  height: calc(100vh - 28px);
   background: rgba(25, 25, 25, 0.55) !important;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 4px 0 28px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
   z-index: 20;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 #main_sider.ant-layout-sider-collapsed {
-  transform: translateX(-100%);
+  transform: translateX(calc(-100% - 14px));
+  opacity: 0;
+  pointer-events: none;
 }
 
 #main_sider .ant-layout-sider-children {
   height: 100%;
+  border-radius: 16px;
 }
 
 #main_content-layout {
