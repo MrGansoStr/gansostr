@@ -1,14 +1,22 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import svgr from 'vite-plugin-svgr'
+import tailwindcss from '@tailwindcss/vite'
+import path from 'node:path'
 
 export default defineConfig({
   plugins: [
     react(),
+    tailwindcss(),
     svgr({
       include: "**/*.svg?react"
     }),
   ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
    // Di a Vite que NO optimice onnxruntime-web
   optimizeDeps: {
     exclude: ['onnxruntime-web']
