@@ -31,7 +31,7 @@ const ModalShow: React.FC = () => {
   const { modalOpen, setModalOpen, idComponent } = UseContextMainPage();
   const [fullScreen ,setFullScreen] = useState(false);
   // console.log(ListComponents, idComponent)
-  let dict_nodes_description: {[key:string] : {summary: string, all_info: string, more_info?: boolean}} = AllTreeV2Json.NodesDescription;
+  const dict_nodes_description: {[key:string] : {summary: string, all_info: string, more_info?: boolean}} = AllTreeV2Json.NodesDescription;
   const handleFullScreen = () => {
     // e.preventDeafult();
     setFullScreen(!fullScreen);

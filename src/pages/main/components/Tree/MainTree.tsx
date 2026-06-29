@@ -396,14 +396,14 @@ interface nodePositions {
 const Scene: FC = () => {
   const random_positions = gen_positions(DataScienceJson.DataScience.nodes.length)
 
-  let nodeData: nodePositions[] = [];
+  const nodeData: nodePositions[] = [];
   let help_index = 0;
-  let dict_nodes: { [key: string]: {position: [number, number, number], label: string} } = {};
-  let dict_colors: { [key: string] : {color: string}} = DataScienceJson.DataScience.colors_node;
-  let dict_nodes_description: {[key:string] : {summary: string, all_info: string, more_info?: boolean}} = DescriptionsJson.NodesDescription;
+  const dict_nodes: { [key: string]: {position: [number, number, number], label: string} } = {};
+  const dict_colors: { [key: string] : {color: string}} = DataScienceJson.DataScience.colors_node;
+  const dict_nodes_description: {[key:string] : {summary: string, all_info: string, more_info?: boolean}} = DescriptionsJson.NodesDescription;
 
-  let nodes_all = DataScienceJson.DataScience.nodes;
-  let connections_all = DataScienceJson.DataScience.connections;
+  const nodes_all = DataScienceJson.DataScience.nodes;
+  const connections_all = DataScienceJson.DataScience.connections;
   
 
   

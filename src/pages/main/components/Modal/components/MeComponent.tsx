@@ -57,7 +57,7 @@ export const stylesAllMoreInfo: { [key: string]: React.CSSProperties } = {
     padding: "20px",
     margin: "auto",
     maxWidth: "800px",
-    textAlign: "center" as "center", // Ajustar el tipo correctamente
+    textAlign: "center" as const, // Ajustar el tipo correctamente
     // backgroundColor: "#f9f9f9",
     color: "white",
     borderRadius: "10px",
