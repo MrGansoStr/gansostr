@@ -13,10 +13,12 @@
     "@ant-design/icons": "^5.5.2",
     "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "^8.17.10",
+    "@tailwindcss/vite": "^4.3.2",
     "antd": "^5.22.7",
     "onnxruntime-web": "^1.21.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "tailwindcss": "^4.3.2",
     "three": "^0.171.0",
     "three-stdlib": "^2.35.14"
   },
