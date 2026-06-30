@@ -76,7 +76,7 @@ const fragmentShader = /* glsl */ `
     // Compose
     vec3 color = ambient + pointContrib + dirContrib;
     color += baseColor * fresnel * 0.5;
-    color += baseColor * 0.1;
+    color += baseColor * 0.35;
 
     // Alpha
     float alpha = mix(0.15, 0.9, fresnel);
@@ -106,11 +106,11 @@ const Bubble: FC<BubbleProps> = ({
       uSeed: { value: seed },
       uPointLightPos: { value: new THREE.Vector3(20, 20, 20) },
       uPointLightColor: { value: new THREE.Color(0xffffff) },
-      uPointLightIntensity: { value: 1.5 },
+      uPointLightIntensity: { value: 2.5 },
       uDirLightDir: { value: new THREE.Vector3(5, 5, 5) },
       uDirLightColor: { value: new THREE.Color(0xffffff) },
-      uDirLightIntensity: { value: 0.8 },
-      uAmbient: { value: 0.15 },
+      uDirLightIntensity: { value: 1.5 },
+      uAmbient: { value: 0.4 },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
