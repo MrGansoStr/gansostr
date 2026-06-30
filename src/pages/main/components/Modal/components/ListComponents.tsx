@@ -2,6 +2,8 @@ import Exp1 from "./Exp1";
 import Exp2 from "./Exp2";
 import Exp3 from "./Exp3";
 import Exp4 from "./Exp4";
+import Exp5 from "./Exp5";
+import Exp6 from "./Exp6";
 import MeComponent from "./MeComponent";
 import { ModelSkin } from "./ModelSkin";
 import Proy1 from "./Proy1";
@@ -15,6 +17,8 @@ export const ListComponents: { [key: string]: React.ReactElement } = {
     "exp2": <Exp2/>,
     "exp3": <Exp3/>,
     "exp4": <Exp4/>,
+    "exp5": <Exp5/>,
+    "exp6": <Exp6/>,
     "proy1": <Proy1/>,
     "proy2": <Proy2/>,
     "proy3": <Proy3/>,
