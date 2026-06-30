@@ -35,15 +35,20 @@ const NeuronConnection: FC<ConnectionProps> = ({
   const { tubePath, brightPoints } = useMemo(() => {
     const startVec = new THREE.Vector3(...start);
     const endVec = new THREE.Vector3(...end);
-    const distance = startVec.distanceTo(endVec);
+    const direction = endVec.clone().sub(startVec).normalize();
+    const radius = 2.5;
 
-    const mid = startVec.clone().add(endVec).multiplyScalar(0.5);
+    const surfaceStart = startVec.clone().add(direction.clone().multiplyScalar(radius));
+    const surfaceEnd = endVec.clone().sub(direction.clone().multiplyScalar(radius));
+    const distance = surfaceStart.distanceTo(surfaceEnd);
+
+    const mid = surfaceStart.clone().add(surfaceEnd).multiplyScalar(0.5);
     const offset = distance * 0.15;
     mid.x += (Math.random() - 0.5) * offset;
     mid.y += (Math.random() - 0.5) * offset;
     mid.z += (Math.random() - 0.5) * offset;
 
-    const curve = new THREE.QuadraticBezierCurve3(startVec, mid, endVec);
+    const curve = new THREE.QuadraticBezierCurve3(surfaceStart, mid, surfaceEnd);
     const segments = 50;
     const points = Array.from({ length: segments + 1 }, (_, i) =>
       curve.getPoint(i / segments)
