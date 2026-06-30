@@ -11,14 +11,14 @@ interface BubbleProps {
 }
 
 const vertexShader = /* glsl */ `
-  varying vec3 vNormal;
-  varying vec3 vViewDir;
+  varying vec3 vWorldNormal;
+  varying vec3 vWorldPos;
 
   void main() {
-    vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
-    vNormal = normalize(normalMatrix * normal);
-    vViewDir = normalize(-mvPos.xyz);
-    gl_Position = projectionMatrix * mvPos;
+    vWorldNormal = normalize(mat3(modelMatrix) * normal);
+    vec4 worldPos = modelMatrix * vec4(position, 1.0);
+    vWorldPos = worldPos.xyz;
+    gl_Position = projectionMatrix * viewMatrix * worldPos;
   }
 `;
 
@@ -28,53 +28,58 @@ const fragmentShader = /* glsl */ `
   uniform float uHovered;
   uniform float uTime;
   uniform float uSeed;
+  uniform vec3 uPointLightPos;
+  uniform vec3 uPointLightColor;
+  uniform float uPointLightIntensity;
+  uniform vec3 uDirLightDir;
+  uniform vec3 uDirLightColor;
+  uniform float uDirLightIntensity;
+  uniform float uAmbient;
 
-  varying vec3 vNormal;
-  varying vec3 vViewDir;
-
-  vec3 thinFilm(float t) {
-    return vec3(
-      sin(t * 3.0) * 0.5 + 0.5,
-      sin(t * 3.0 + 2.1) * 0.5 + 0.5,
-      sin(t * 3.0 + 4.2) * 0.5 + 0.5
-    );
-  }
+  varying vec3 vWorldNormal;
+  varying vec3 vWorldPos;
 
   void main() {
-    vec3 normal = vNormal;
+    vec3 normal = normalize(vWorldNormal);
     if (!gl_FrontFacing) normal = -normal;
 
-    float ndv = max(dot(normal, vViewDir), 0.0);
+    vec3 viewDir = normalize(cameraPosition - vWorldPos);
+    float ndv = max(dot(normal, viewDir), 0.0);
 
-    // Fresnel: transparent center, opaque rim
-    float fresnel = pow(1.0 - ndv, 3.0);
+    // Fresnel: sharp rim to prevent background bleed
+    float fresnel = pow(1.0 - ndv, 5.0);
 
     vec3 baseColor = mix(uColor, uHoverColor, uHovered);
 
-    // Iridescence at grazing angles
-    vec3 irid = thinFilm((1.0 - ndv) * 7.0 + uTime * 0.4 + uSeed * 1.3);
+    // Ambient base
+    vec3 ambient = baseColor * uAmbient;
 
-    // Two specular highlights (key + fill)
-    vec3 light1 = normalize(vec3(0.5, 0.85, 0.6));
-    vec3 light2 = normalize(vec3(-0.4, -0.3, 0.6));
-    float spec1 = pow(max(dot(vViewDir, reflect(-light1, normal)), 0.0), 90.0);
-    float spec2 = pow(max(dot(vViewDir, reflect(-light2, normal)), 0.0), 40.0) * 0.35;
+    // Point light (Blinn-Phong + distance attenuation)
+    vec3 toPoint = uPointLightPos - vWorldPos;
+    vec3 pointDir = normalize(toPoint);
+    float pointDist = length(toPoint);
+    float pointAtten = 1.0 / (1.0 + pointDist * pointDist * 0.0005);
+    float pointDiff = max(dot(normal, pointDir), 0.0);
+    vec3 pointHalf = normalize(pointDir + viewDir);
+    float pointSpec = pow(max(dot(normal, pointHalf), 0.0), 80.0);
+    vec3 pointContrib = (baseColor * pointDiff + vec3(pointSpec))
+      * uPointLightColor * uPointLightIntensity * pointAtten;
 
-    // Bright pinch hotspot (top-left)
-    vec3 pinch = normalize(vec3(-0.6, 0.7, 0.4));
-    float pinchSpec = pow(max(dot(vViewDir, reflect(-pinch, normal)), 0.0), 200.0);
+    // Directional light (Blinn-Phong, parallel rays)
+    vec3 dirDir = normalize(uDirLightDir);
+    float dirDiff = max(dot(normal, dirDir), 0.0);
+    vec3 dirHalf = normalize(dirDir + viewDir);
+    float dirSpec = pow(max(dot(normal, dirHalf), 0.0), 80.0);
+    vec3 dirContrib = (baseColor * dirDiff + vec3(dirSpec))
+      * uDirLightColor * uDirLightIntensity;
 
     // Compose
-    vec3 color = baseColor * (0.2 + ndv * 0.3);
-    color += irid * fresnel * 0.7;
-    color += vec3(spec1) * 1.0;
-    color += vec3(spec2) * 0.5;
-    color += vec3(pinchSpec) * 1.2;
+    vec3 color = ambient + pointContrib + dirContrib;
     color += baseColor * fresnel * 0.5;
-    color += baseColor * 0.08;
+    color += baseColor * 0.1;
 
     // Alpha
-    float alpha = mix(0.05, 0.88, fresnel);
+    float alpha = mix(0.15, 0.9, fresnel);
     alpha = mix(alpha, alpha + 0.25, uHovered);
     alpha += sin(uTime * 1.5 + uSeed) * 0.015;
 
@@ -99,6 +104,13 @@ const Bubble: FC<BubbleProps> = ({
       uHovered: { value: 0 },
       uTime: { value: 0 },
       uSeed: { value: seed },
+      uPointLightPos: { value: new THREE.Vector3(20, 20, 20) },
+      uPointLightColor: { value: new THREE.Color(0xffffff) },
+      uPointLightIntensity: { value: 1.5 },
+      uDirLightDir: { value: new THREE.Vector3(5, 5, 5) },
+      uDirLightColor: { value: new THREE.Color(0xffffff) },
+      uDirLightIntensity: { value: 0.8 },
+      uAmbient: { value: 0.15 },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
