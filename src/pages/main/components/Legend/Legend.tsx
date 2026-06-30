@@ -26,7 +26,7 @@ const data_legend: LegendItem[] = [
   { name: "Tecnologias", color: "#58C46E", icon: <PythonOutlined />, colorTypes: ["tech", "Tech"] },
   { name: "Proyectos", color: "#F1F57C", icon: <BulbOutlined />, colorTypes: ["proy"] },
   { name: "Modelos", color: "#D66AF7", icon: <RobotOutlined />, colorTypes: ["model"] },
-  { name: "Habiliadades", color: "#80DDF7", icon: <ToolOutlined />, colorTypes: ["skill"] },
+  { name: "Habilidades", color: "#80DDF7", icon: <ToolOutlined />, colorTypes: ["skill"] },
 ];
 
 const Legend = () => {
