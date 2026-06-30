@@ -2,12 +2,15 @@ import { useRef, useMemo, useEffect, FC } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
+const MAX_CONN_LIGHTS = 32;
+
 interface BubbleProps {
   color: string;
   hoverColor: string;
   hovered: boolean;
   scale?: number;
   seed?: number;
+  connLights?: THREE.Vector3[];
 }
 
 const vertexShader = /* glsl */ `
@@ -35,6 +38,10 @@ const fragmentShader = /* glsl */ `
   uniform vec3 uDirLightColor;
   uniform float uDirLightIntensity;
   uniform float uAmbient;
+  uniform vec3 uConnLights[32];
+  uniform int uConnLightCount;
+  uniform vec3 uConnLightColor;
+  uniform float uConnLightIntensity;
 
   varying vec3 vWorldNormal;
   varying vec3 vWorldPos;
@@ -46,7 +53,7 @@ const fragmentShader = /* glsl */ `
     vec3 viewDir = normalize(cameraPosition - vWorldPos);
     float ndv = max(dot(normal, viewDir), 0.0);
 
-    // Fresnel: sharp rim to prevent background bleed
+    // Fresnel: sharp rim
     float fresnel = pow(1.0 - ndv, 5.0);
 
     vec3 baseColor = mix(uColor, uHoverColor, uHovered);
@@ -65,7 +72,7 @@ const fragmentShader = /* glsl */ `
     vec3 pointContrib = (baseColor * pointDiff + vec3(pointSpec))
       * uPointLightColor * uPointLightIntensity * pointAtten;
 
-    // Directional light (Blinn-Phong, parallel rays)
+    // Directional light (Blinn-Phong)
     vec3 dirDir = normalize(uDirLightDir);
     float dirDiff = max(dot(normal, dirDir), 0.0);
     vec3 dirHalf = normalize(dirDir + viewDir);
@@ -73,8 +80,25 @@ const fragmentShader = /* glsl */ `
     vec3 dirContrib = (baseColor * dirDiff + vec3(dirSpec))
       * uDirLightColor * uDirLightIntensity;
 
-    // Compose
+    // Compose scene lights
     vec3 color = ambient + pointContrib + dirContrib;
+
+    // Connection lights (neural pulse)
+    for (int i = 0; i < 32; i++) {
+      if (i >= uConnLightCount) break;
+      vec3 toLight = uConnLights[i] - vWorldPos;
+      float dist = length(toLight);
+      vec3 lightDir = toLight / max(dist, 0.001);
+      float atten = 1.0 / (1.0 + dist * dist * 0.008);
+      float diff = max(dot(normal, lightDir), 0.0);
+      vec3 halfVec = normalize(lightDir + viewDir);
+      float spec = pow(max(dot(normal, halfVec), 0.0), 64.0);
+      float pulse = 0.6 + sin(uTime * 2.5 + float(i) * 0.8) * 0.4;
+      vec3 lc = uConnLightColor * uConnLightIntensity * atten * pulse;
+      color += baseColor * diff * lc;
+      color += vec3(spec) * lc;
+    }
+
     color += baseColor * fresnel * 0.5;
     color += baseColor * 0.35;
 
@@ -93,6 +117,7 @@ const Bubble: FC<BubbleProps> = ({
   hovered,
   scale = 2.5,
   seed = 0,
+  connLights,
 }) => {
   const matRef = useRef<THREE.ShaderMaterial>(null);
   const hoverLerp = useRef(0);
@@ -111,6 +136,12 @@ const Bubble: FC<BubbleProps> = ({
       uDirLightColor: { value: new THREE.Color(0xffffff) },
       uDirLightIntensity: { value: 1.5 },
       uAmbient: { value: 0.4 },
+      uConnLights: {
+        value: Array.from({ length: MAX_CONN_LIGHTS }, () => new THREE.Vector3()),
+      },
+      uConnLightCount: { value: 0 },
+      uConnLightColor: { value: new THREE.Color(0xccddff) },
+      uConnLightIntensity: { value: 1.2 },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -120,6 +151,15 @@ const Bubble: FC<BubbleProps> = ({
     uniforms.uColor.value.set(color);
     uniforms.uHoverColor.value.set(hoverColor);
   }, [color, hoverColor, uniforms]);
+
+  useEffect(() => {
+    const lights = connLights ?? [];
+    const count = Math.min(lights.length, MAX_CONN_LIGHTS);
+    for (let i = 0; i < count; i++) {
+      (uniforms.uConnLights.value as THREE.Vector3[])[i].copy(lights[i]);
+    }
+    uniforms.uConnLightCount.value = count;
+  }, [connLights, uniforms]);
 
   useFrame((_, delta) => {
     const target = hovered ? 1 : 0;

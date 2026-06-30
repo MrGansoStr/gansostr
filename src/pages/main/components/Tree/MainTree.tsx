@@ -21,6 +21,7 @@ interface NodeProps {
   info?: {summary: string, all_info: string, more_info?:boolean}
   onButtonClick?: () => void;
   seed?: number;
+  connLights?: THREE.Vector3[];
 }
 
 const Node: FC<NodeProps> = ({
@@ -31,6 +32,7 @@ const Node: FC<NodeProps> = ({
   id_node,
   info,
   seed,
+  connLights,
 }) => {
   const { setModalOpen, setIdComponent } = UseContextMainPage()
   const [hovered, setHovered] = useState(false)
@@ -61,6 +63,7 @@ const Node: FC<NodeProps> = ({
         hoverColor={hoverColor}
         hovered={hovered}
         seed={seed}
+        connLights={connLights}
       />
 
       {/* Tooltip con información */}
@@ -105,7 +108,7 @@ const Scene: FC = () => {
 
   const nodeData: nodePositions[] = [];
   let help_index = 0;
-  const dict_nodes: { [key: string]: {position: [number, number, number], label: string} } = {};
+  const dict_nodes: { [key: string]: {position: [number, number, number], label: string, color: string} } = {};
   const dict_colors: { [key: string] : {color: string}} = DataScienceJson.DataScience.colors_node;
   const dict_nodes_description: {[key:string] : {summary: string, all_info: string, more_info?: boolean}} = DescriptionsJson.NodesDescription;
 
@@ -123,6 +126,7 @@ const Scene: FC = () => {
     dict_nodes[nodes_all[help_index].id] = {
       position: value as [number, number, number],
       label: nodes_all[help_index].name,
+      color: nodes_all[help_index]?.colorType !== undefined ? dict_colors[nodes_all[help_index]?.colorType]?.color ?? "white" : "white",
     };
     help_index++;
   })
@@ -131,6 +135,16 @@ const Scene: FC = () => {
   const handleNodeAction = (label: string) => {
     alert(`Button clicked on ${label}`);
   };
+
+  const connLights: THREE.Vector3[] = connections_all.map(conn => {
+    const from = dict_nodes[conn.from].position;
+    const to = dict_nodes[conn.to].position;
+    return new THREE.Vector3(
+      (from[0] + to[0]) / 2,
+      (from[1] + to[1]) / 2,
+      (from[2] + to[2]) / 2
+    );
+  });
 
   return (
     <Canvas camera={{position: [90, 90, 25], fov: 30}}>
@@ -156,15 +170,18 @@ const Scene: FC = () => {
           label={node.label}
           onButtonClick={() => handleNodeAction(node.label)}
           seed={index}
+          connLights={connLights}
           />
           ))}
 
       {
         connections_all.map((connection, index) => (
-          <NeuronConnection key={index} start={dict_nodes[connection.from].position} end={dict_nodes[connection.to].position}
-          color="white"
-          branchDensity={0.2}
-          thickness={0.3}
+          <NeuronConnection key={index}
+            start={dict_nodes[connection.from].position}
+            end={dict_nodes[connection.to].position}
+            startColor={dict_nodes[connection.from].color}
+            endColor={dict_nodes[connection.to].color}
+            thickness={0.3}
           />
         ))
       }
