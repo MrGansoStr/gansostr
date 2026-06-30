@@ -1,4 +1,4 @@
-import  { useState, useRef, useMemo, FC } from 'react';
+import { useState, useRef, useMemo, FC } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Html, } from '@react-three/drei';
 import * as THREE from 'three';
@@ -19,7 +19,7 @@ interface NodeProps {
   color: string;
   hoverColor: string;
   label: string;
-  info?: {summary: string, all_info: string, more_info?:boolean}
+  info?: { summary: string, all_info: string, more_info?: boolean }
   onButtonClick?: () => void;
   seed?: number;
   connLightState?: ConnLightState;
@@ -65,6 +65,7 @@ const Node: FC<NodeProps> = ({
         hovered={hovered}
         seed={seed}
         connLightState={connLightState}
+        brightness={8.0}
       />
 
       {/* Tooltip con información */}
@@ -101,7 +102,7 @@ interface nodePositions {
   position: [number, number, number];
   label: string;
   color?: string;
-  info?: {summary: string, all_info: string, more_info?: boolean};
+  info?: { summary: string, all_info: string, more_info?: boolean };
 }
 
 const LightUpdater: FC<{ state: ConnLightState }> = ({ state }) => {
@@ -122,9 +123,9 @@ const Scene: FC = () => {
 
   const nodeData: nodePositions[] = [];
   let help_index = 0;
-  const dict_nodes: { [key: string]: {position: [number, number, number], label: string, color: string} } = {};
-  const dict_colors: { [key: string] : {color: string}} = DataScienceJson.DataScience.colors_node;
-  const dict_nodes_description: {[key:string] : {summary: string, all_info: string, more_info?: boolean}} = DescriptionsJson.NodesDescription;
+  const dict_nodes: { [key: string]: { position: [number, number, number], label: string, color: string } } = {};
+  const dict_colors: { [key: string]: { color: string } } = DataScienceJson.DataScience.colors_node;
+  const dict_nodes_description: { [key: string]: { summary: string, all_info: string, more_info?: boolean } } = DescriptionsJson.NodesDescription;
 
   const nodes_all = DataScienceJson.DataScience.nodes;
   const connections_all = DataScienceJson.DataScience.connections;
@@ -159,11 +160,11 @@ const Scene: FC = () => {
       new THREE.Vector3().lerpVectors(s, e, 0.5)
     );
     return { positions, startEnds };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <Canvas camera={{position: [90, 90, 25], fov: 30}}>
+    <Canvas camera={{ position: [90, 90, 25], fov: 30 }}>
       <LightUpdater state={connLightState} />
 
       <ambientLight intensity={20} />
@@ -189,8 +190,8 @@ const Scene: FC = () => {
           onButtonClick={() => handleNodeAction(node.label)}
           seed={index}
           connLightState={connLightState}
-          />
-          ))}
+        />
+      ))}
 
       {
         connections_all.map((connection, index) => (

@@ -17,6 +17,7 @@ interface BubbleProps {
   seed?: number;
   connLightState?: ConnLightState;
   isStatic?: boolean;
+  brightness?: number;
 }
 
 const vertexShader = /* glsl */ `
@@ -48,6 +49,7 @@ const fragmentShader = /* glsl */ `
   uniform int uConnLightCount;
   uniform vec3 uConnLightColor;
   uniform float uConnLightIntensity;
+  uniform float uBrightness;
 
   varying vec3 vWorldNormal;
   varying vec3 vWorldPos;
@@ -105,8 +107,8 @@ const fragmentShader = /* glsl */ `
       color += vec3(spec) * lc;
     }
 
-    color += baseColor * fresnel * 0.5;
-    color += baseColor * 0.35;
+    color += baseColor * fresnel * 0.5 * uBrightness;
+    color += baseColor * 0.35 * uBrightness;
 
     // Alpha
     float alpha = mix(0.15, 0.9, fresnel);
@@ -125,6 +127,7 @@ const Bubble: FC<BubbleProps> = ({
   seed = 0,
   connLightState,
   isStatic = false,
+  brightness = 1.0,
 }) => {
   const matRef = useRef<THREE.ShaderMaterial>(null);
   const hoverLerp = useRef(0);
@@ -149,6 +152,7 @@ const Bubble: FC<BubbleProps> = ({
       uConnLightCount: { value: 0 },
       uConnLightColor: { value: new THREE.Color(0xccddff) },
       uConnLightIntensity: { value: 3.0 },
+      uBrightness: { value: brightness },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -157,7 +161,8 @@ const Bubble: FC<BubbleProps> = ({
   useEffect(() => {
     uniforms.uColor.value.set(color);
     uniforms.uHoverColor.value.set(hoverColor);
-  }, [color, hoverColor, uniforms]);
+    uniforms.uBrightness.value = brightness;
+  }, [color, hoverColor, brightness, uniforms]);
 
   useFrame((_, delta) => {
     if (!matRef.current) return;
