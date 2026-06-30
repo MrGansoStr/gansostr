@@ -47,16 +47,21 @@ const NeuronConnection: FC<ConnectionProps> = ({
     );
     const tubePath = new THREE.CatmullRomCurve3(points);
 
-    const numPoints = 2 + Math.floor(Math.random() * 3);
+    const numMid = 2 + Math.floor(Math.random() * 3);
     const sc = brightenColor(startColor, 0.45);
     const ec = brightenColor(endColor, 0.45);
-    const brightPoints = Array.from({ length: numPoints }, (_, i) => {
-      const t = (i + 1) / (numPoints + 1);
+    const allT = [
+      0,
+      ...Array.from({ length: numMid }, (_, i) => (i + 1) / (numMid + 1)),
+      1,
+    ];
+    const brightPoints = allT.map((t) => {
       const color = sc.clone().lerp(ec, t);
+      const isEndpoint = t === 0 || t === 1;
       return {
         pos: curve.getPoint(t),
         colorHex: `#${color.getHexString()}`,
-        size: thickness * (0.5 + Math.random() * 1.2),
+        size: thickness * (isEndpoint ? 1.0 + Math.random() * 0.5 : 0.5 + Math.random() * 1.2),
       };
     });
 
