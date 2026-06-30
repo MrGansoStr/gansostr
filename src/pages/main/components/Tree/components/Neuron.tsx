@@ -11,6 +11,7 @@ interface BubbleProps {
   scale?: number;
   seed?: number;
   connLights?: THREE.Vector3[];
+  isStatic?: boolean;
 }
 
 const vertexShader = /* glsl */ `
@@ -118,6 +119,7 @@ const Bubble: FC<BubbleProps> = ({
   scale = 2.5,
   seed = 0,
   connLights,
+  isStatic = false,
 }) => {
   const matRef = useRef<THREE.ShaderMaterial>(null);
   const hoverLerp = useRef(0);
@@ -162,6 +164,7 @@ const Bubble: FC<BubbleProps> = ({
   }, [connLights, uniforms]);
 
   useFrame((_, delta) => {
+    if (isStatic) return;
     const target = hovered ? 1 : 0;
     hoverLerp.current += (target - hoverLerp.current) * Math.min(delta * 8, 1);
     if (matRef.current) {
@@ -173,7 +176,7 @@ const Bubble: FC<BubbleProps> = ({
   return (
     <group scale={scale}>
       <mesh>
-        <sphereGeometry args={[1, 64, 64]} />
+        <sphereGeometry args={[1, isStatic ? 32 : 64, isStatic ? 32 : 64]} />
         <shaderMaterial
           ref={matRef}
           uniforms={uniforms}

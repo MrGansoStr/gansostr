@@ -2,6 +2,7 @@ import { useRef, useMemo, useEffect, FC } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { Tube } from "@react-three/drei";
+import Bubble from "./Neuron";
 
 interface ConnectionProps {
   start: [number, number, number];
@@ -27,7 +28,6 @@ const NeuronConnection: FC<ConnectionProps> = ({
   thickness = 0.3,
 }) => {
   const tubeMatRef = useRef<THREE.ShaderMaterial>(null);
-  const pointsRef = useRef<THREE.Group>(null);
 
   const { tubePath, brightPoints } = useMemo(() => {
     const startVec = new THREE.Vector3(...start);
@@ -52,9 +52,10 @@ const NeuronConnection: FC<ConnectionProps> = ({
     const ec = brightenColor(endColor, 0.45);
     const brightPoints = Array.from({ length: numPoints }, (_, i) => {
       const t = (i + 1) / (numPoints + 1);
+      const color = sc.clone().lerp(ec, t);
       return {
         pos: curve.getPoint(t),
-        color: sc.clone().lerp(ec, t),
+        colorHex: `#${color.getHexString()}`,
         size: thickness * (0.8 + Math.random() * 0.5),
       };
     });
@@ -81,12 +82,6 @@ const NeuronConnection: FC<ConnectionProps> = ({
     const t = clock.getElapsedTime();
     if (tubeMatRef.current) {
       tubeMatRef.current.uniforms.uTime.value = t;
-    }
-    if (pointsRef.current) {
-      pointsRef.current.children.forEach((child, i) => {
-        const pulse = 0.7 + Math.sin(t * 2.5 + i * 0.7) * 0.3;
-        child.scale.setScalar(pulse);
-      });
     }
   });
 
@@ -138,21 +133,19 @@ const NeuronConnection: FC<ConnectionProps> = ({
         />
       </Tube>
 
-      {/* Bright pulsing points along the connection */}
-      <group ref={pointsRef}>
-        {brightPoints.map((bp, i) => (
-          <mesh key={i} position={bp.pos}>
-            <sphereGeometry args={[bp.size, 12, 12]} />
-            <meshBasicMaterial
-              color={bp.color}
-              transparent
-              opacity={0.9}
-              blending={THREE.AdditiveBlending}
-              depthWrite={false}
-            />
-          </mesh>
-        ))}
-      </group>
+      {/* Static bubbles along the connection */}
+      {brightPoints.map((bp, i) => (
+        <group key={i} position={[bp.pos.x, bp.pos.y, bp.pos.z]}>
+          <Bubble
+            color={bp.colorHex}
+            hoverColor={bp.colorHex}
+            hovered={false}
+            scale={bp.size}
+            seed={i}
+            isStatic
+          />
+        </group>
+      ))}
     </>
   );
 };
