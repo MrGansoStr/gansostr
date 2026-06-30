@@ -1,5 +1,5 @@
-import  { useState, useRef, FC } from 'react';
-import { Canvas } from '@react-three/fiber';
+import  { useState, useRef, useMemo, FC } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Html, } from '@react-three/drei';
 import * as THREE from 'three';
 import { Button, Card, Tooltip } from 'antd';
@@ -8,6 +8,7 @@ import { gen_positions } from '../../utils/node.utils';
 import DataScienceJson from "../../../../infoToShow/Nodes.json"
 import DescriptionsJson from "../../../../infoToShow/AllTreev2.json"
 import Bubble from './components/Neuron';
+import type { ConnLightState } from './components/Neuron';
 import NeuronConnection from './components/NeuronConnection';
 
 interface NodeProps {
@@ -21,7 +22,7 @@ interface NodeProps {
   info?: {summary: string, all_info: string, more_info?:boolean}
   onButtonClick?: () => void;
   seed?: number;
-  connLights?: THREE.Vector3[];
+  connLightState?: ConnLightState;
 }
 
 const Node: FC<NodeProps> = ({
@@ -32,7 +33,7 @@ const Node: FC<NodeProps> = ({
   id_node,
   info,
   seed,
-  connLights,
+  connLightState,
 }) => {
   const { setModalOpen, setIdComponent } = UseContextMainPage()
   const [hovered, setHovered] = useState(false)
@@ -63,7 +64,7 @@ const Node: FC<NodeProps> = ({
         hoverColor={hoverColor}
         hovered={hovered}
         seed={seed}
-        connLights={connLights}
+        connLightState={connLightState}
       />
 
       {/* Tooltip con información */}
@@ -103,6 +104,19 @@ interface nodePositions {
   info?: {summary: string, all_info: string, more_info?: boolean};
 }
 
+const LightUpdater: FC<{ state: ConnLightState }> = ({ state }) => {
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime();
+    const len = Math.min(state.startEnds.length, state.positions.length);
+    for (let i = 0; i < len; i++) {
+      const { s, e } = state.startEnds[i];
+      const phase = (t * 0.25 + i * 0.1) % 1.0;
+      state.positions[i].lerpVectors(s, e, phase);
+    }
+  });
+  return null;
+};
+
 const Scene: FC = () => {
   const random_positions = gen_positions(DataScienceJson.DataScience.nodes.length)
 
@@ -136,18 +150,22 @@ const Scene: FC = () => {
     alert(`Button clicked on ${label}`);
   };
 
-  const connLights: THREE.Vector3[] = connections_all.map(conn => {
-    const from = dict_nodes[conn.from].position;
-    const to = dict_nodes[conn.to].position;
-    return new THREE.Vector3(
-      (from[0] + to[0]) / 2,
-      (from[1] + to[1]) / 2,
-      (from[2] + to[2]) / 2
+  const connLightState = useMemo<ConnLightState>(() => {
+    const startEnds = connections_all.map(conn => ({
+      s: new THREE.Vector3(...dict_nodes[conn.from].position),
+      e: new THREE.Vector3(...dict_nodes[conn.to].position),
+    }));
+    const positions = startEnds.map(({ s, e }) =>
+      new THREE.Vector3().lerpVectors(s, e, 0.5)
     );
-  });
+    return { positions, startEnds };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Canvas camera={{position: [90, 90, 25], fov: 30}}>
+      <LightUpdater state={connLightState} />
+
       <ambientLight intensity={20} />
       <pointLight position={[20, 20, 20]} />
       <directionalLight
@@ -170,7 +188,7 @@ const Scene: FC = () => {
           label={node.label}
           onButtonClick={() => handleNodeAction(node.label)}
           seed={index}
-          connLights={connLights}
+          connLightState={connLightState}
           />
           ))}
 
@@ -182,6 +200,7 @@ const Scene: FC = () => {
             startColor={dict_nodes[connection.from].color}
             endColor={dict_nodes[connection.to].color}
             thickness={0.3}
+            connLightState={connLightState}
           />
         ))
       }

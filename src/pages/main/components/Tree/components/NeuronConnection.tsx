@@ -3,6 +3,7 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { Tube } from "@react-three/drei";
 import Bubble from "./Neuron";
+import type { ConnLightState } from "./Neuron";
 
 interface ConnectionProps {
   start: [number, number, number];
@@ -10,6 +11,7 @@ interface ConnectionProps {
   startColor?: string;
   endColor?: string;
   thickness?: number;
+  connLightState?: ConnLightState;
 }
 
 const brightenColor = (color: string, minLightness = 0.35): THREE.Color => {
@@ -26,6 +28,7 @@ const NeuronConnection: FC<ConnectionProps> = ({
   startColor = "#4fc3f7",
   endColor = "#4fc3f7",
   thickness = 0.3,
+  connLightState,
 }) => {
   const tubeMatRef = useRef<THREE.ShaderMaterial>(null);
 
@@ -148,6 +151,7 @@ const NeuronConnection: FC<ConnectionProps> = ({
             scale={bp.size}
             seed={i}
             isStatic
+            connLightState={connLightState}
           />
         </group>
       ))}

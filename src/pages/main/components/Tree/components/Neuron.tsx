@@ -4,13 +4,18 @@ import * as THREE from "three";
 
 const MAX_CONN_LIGHTS = 32;
 
+export interface ConnLightState {
+  positions: THREE.Vector3[];
+  startEnds: Array<{ s: THREE.Vector3; e: THREE.Vector3 }>;
+}
+
 interface BubbleProps {
   color: string;
   hoverColor: string;
   hovered: boolean;
   scale?: number;
   seed?: number;
-  connLights?: THREE.Vector3[];
+  connLightState?: ConnLightState;
   isStatic?: boolean;
 }
 
@@ -84,17 +89,17 @@ const fragmentShader = /* glsl */ `
     // Compose scene lights
     vec3 color = ambient + pointContrib + dirContrib;
 
-    // Connection lights (neural pulse)
+    // Connection lights (moving energy pulses)
     for (int i = 0; i < 32; i++) {
       if (i >= uConnLightCount) break;
       vec3 toLight = uConnLights[i] - vWorldPos;
       float dist = length(toLight);
       vec3 lightDir = toLight / max(dist, 0.001);
-      float atten = 1.0 / (1.0 + dist * dist * 0.008);
+      float atten = 1.0 / (1.0 + dist * dist * 0.003);
       float diff = max(dot(normal, lightDir), 0.0);
       vec3 halfVec = normalize(lightDir + viewDir);
       float spec = pow(max(dot(normal, halfVec), 0.0), 64.0);
-      float pulse = 0.6 + sin(uTime * 2.5 + float(i) * 0.8) * 0.4;
+      float pulse = 0.7 + sin(uTime * 2.5 + float(i) * 0.8) * 0.3;
       vec3 lc = uConnLightColor * uConnLightIntensity * atten * pulse;
       color += baseColor * diff * lc;
       color += vec3(spec) * lc;
@@ -118,7 +123,7 @@ const Bubble: FC<BubbleProps> = ({
   hovered,
   scale = 2.5,
   seed = 0,
-  connLights,
+  connLightState,
   isStatic = false,
 }) => {
   const matRef = useRef<THREE.ShaderMaterial>(null);
@@ -143,7 +148,7 @@ const Bubble: FC<BubbleProps> = ({
       },
       uConnLightCount: { value: 0 },
       uConnLightColor: { value: new THREE.Color(0xccddff) },
-      uConnLightIntensity: { value: 1.2 },
+      uConnLightIntensity: { value: 3.0 },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -154,22 +159,24 @@ const Bubble: FC<BubbleProps> = ({
     uniforms.uHoverColor.value.set(hoverColor);
   }, [color, hoverColor, uniforms]);
 
-  useEffect(() => {
-    const lights = connLights ?? [];
-    const count = Math.min(lights.length, MAX_CONN_LIGHTS);
-    for (let i = 0; i < count; i++) {
-      (uniforms.uConnLights.value as THREE.Vector3[])[i].copy(lights[i]);
-    }
-    uniforms.uConnLightCount.value = count;
-  }, [connLights, uniforms]);
-
   useFrame((_, delta) => {
-    if (isStatic) return;
-    const target = hovered ? 1 : 0;
-    hoverLerp.current += (target - hoverLerp.current) * Math.min(delta * 8, 1);
-    if (matRef.current) {
+    if (!matRef.current) return;
+
+    if (!isStatic) {
+      const target = hovered ? 1 : 0;
+      hoverLerp.current += (target - hoverLerp.current) * Math.min(delta * 8, 1);
       matRef.current.uniforms.uHovered.value = hoverLerp.current;
-      matRef.current.uniforms.uTime.value += delta;
+    }
+    matRef.current.uniforms.uTime.value += delta;
+
+    if (connLightState) {
+      const lights = connLightState.positions;
+      const count = Math.min(lights.length, MAX_CONN_LIGHTS);
+      const uniformLights = uniforms.uConnLights.value as THREE.Vector3[];
+      for (let i = 0; i < count; i++) {
+        uniformLights[i].copy(lights[i]);
+      }
+      uniforms.uConnLightCount.value = count;
     }
   });
 
