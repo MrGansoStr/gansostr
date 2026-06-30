@@ -90,7 +90,6 @@
       { "from": "exp1", "to": "tech6", "type": "relation" },
       { "from": "exp1", "to": "tech7", "type": "relation" },
       { "from": "exp1", "to": "tech12", "type": "relation" },
-      { "from": "exp1", "to": "tech4", "type": "relation" },
       { "from": "exp1", "to": "tech1", "type": "relation" },
       { "from": "exp1", "to": "exp2", "type": "relation"},
       { "from": "me1", "to": "exp3", "type": "relation"},
@@ -108,6 +107,14 @@
       { "from": "d1", "to": "d3c", "type": "relation"},
       { "from": "tech10", "to": "exp1", "type": "relation"},
       { "from": "exp2", "to": "d1d1", "type": "relation"},
+      { "from": "d1d", "to": "d1d1", "type": "category" },
+      { "from": "d1d", "to": "d1d2", "type": "category" },
+      { "from": "proy1", "to": "d1d2", "type": "utilization" },
+      { "from": "exp3", "to": "d1d1", "type": "utilization" },
+      { "from": "t3", "to": "tech9", "type": "database" },
+      { "from": "t3", "to": "tech10", "type": "database" },
+      { "from": "proy3", "to": "tech9", "type": "utilization" },
+      { "from": "exp3", "to": "tech9", "type": "experience" },
       { "from": "ds1", "to": "me1", "type": "relation"},
       { "from": "ds2", "to": "me1", "type": "relation"}
       
