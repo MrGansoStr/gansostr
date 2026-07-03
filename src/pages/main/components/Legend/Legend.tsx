@@ -61,6 +61,9 @@ const Legend = () => {
   return (
     <div id="legend_sidebar">
       <h2 className="legend_header">Portafolio</h2>
+      <p className="legend_hint">
+        Pasa el cursor sobre los nodos para ver detalles
+      </p>
 
       <div className="legend_list">
         {data_legend.map((item) => (
@@ -82,10 +85,6 @@ const Legend = () => {
             <span className="legend_count">{counts[item.name] ?? 0}</span>
           </div>
         ))}
-      </div>
-
-      <div className="legend_footer">
-        <span>Hover sobre los nodos para ver detalles</span>
       </div>
     </div>
   );
