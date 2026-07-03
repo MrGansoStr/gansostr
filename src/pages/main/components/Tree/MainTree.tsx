@@ -38,6 +38,7 @@ const Node: FC<NodeProps> = ({
 }) => {
   const { setModalOpen, setIdComponent } = UseContextMainPage()
   const [hovered, setHovered] = useState(false)
+  const [overTooltip, setOverTooltip] = useState(false)
   const groupRef = useRef<THREE.Group>(null)
 
   const handlePointerOver = () => {
@@ -52,6 +53,8 @@ const Node: FC<NodeProps> = ({
     setModalOpen(true)
     setIdComponent(id_node)
   }
+
+  const tooltipOpen = hovered || overTooltip
 
   return (
     <group
@@ -73,11 +76,14 @@ const Node: FC<NodeProps> = ({
       {/* Tooltip con información */}
       <Html position={[0, 0, 0]} center style={{ zIndex: "1", position: "absolute" }}>
         <Tooltip
-          open={hovered}
+          open={tooltipOpen}
           overlayClassName="tree-tooltip"
           overlayInnerStyle={{ maxWidth: 300, padding: 0 }}
           title={
-            <>
+            <div
+              onMouseEnter={() => setOverTooltip(true)}
+              onMouseLeave={() => setOverTooltip(false)}
+            >
               <Card
                 size="small"
                 title={label}
@@ -92,7 +98,7 @@ const Node: FC<NodeProps> = ({
               >
                 {info?.all_info}
               </Card>
-            </>
+            </div>
           }
         >
           <div style={{ width: 0, height: 0 }} />
