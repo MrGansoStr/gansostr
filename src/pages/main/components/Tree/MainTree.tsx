@@ -65,7 +65,8 @@ const Node: FC<NodeProps> = ({
         hovered={hovered}
         seed={seed}
         connLightState={connLightState}
-        brightness={8.0}
+        brightness={12.0}
+        scale={4}
       />
 
       {/* Tooltip con información */}
