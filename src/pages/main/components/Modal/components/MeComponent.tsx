@@ -57,17 +57,17 @@ export const stylesAllMoreInfo: { [key: string]: React.CSSProperties } = {
     margin: "auto",
     maxWidth: "800px",
     textAlign: "center" as const,
-    color: "white",
+    color: "rgba(255, 255, 255, 0.95)",
     borderRadius: "10px",
     boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
   },
   name: {
     fontSize: "2rem",
-    color: "white",
+    color: "rgba(255, 255, 255, 0.95)",
   },
   description: {
     fontSize: "1rem",
-    color: "#888",
+    color: "rgba(255, 255, 255, 0.85)",
     lineHeight: "1.6",
     marginTop: "10px",
   },
@@ -77,7 +77,7 @@ export const stylesAllMoreInfo: { [key: string]: React.CSSProperties } = {
   socialLink: {
     margin: "0 10px",
     textDecoration: "none",
-    color: "#0077b5",
+    color: "#4fc3f7",
     fontWeight: "bold",
   },
   image: {
