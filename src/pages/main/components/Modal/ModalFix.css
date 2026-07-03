@@ -3,18 +3,57 @@
     z-index: 16693394 !important;
 }
 
+.glass-modal .ant-modal-content {
+    background: rgba(10, 12, 20, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 0;
+}
+
+.glass-modal .ant-modal-header {
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 16px 20px;
+    margin-bottom: 0;
+}
+
+.glass-modal .ant-modal-title {
+    color: rgba(255, 255, 255, 0.92);
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.glass-modal .ant-modal-body {
+    padding: 16px 20px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.glass-modal .ant-modal-close-icon {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.glass-modal .ant-modal-close-icon:hover {
+    color: rgba(255, 255, 255, 0.9);
+}
+
 #icon-fullscreen {
-    color: #8b8b8b;
+    color: rgba(255, 255, 255, 0.5);
 }
 
 #icon-fullscreen :hover{
     color: white;
-    background-color: #666666;
+    background-color: rgba(255, 255, 255, 0.08);
 }
 
 .modalFullScreen{
     height: 100vh !important;
     width: 100vw !important;
 }
+
 .modal-content-FullScreen{
 }

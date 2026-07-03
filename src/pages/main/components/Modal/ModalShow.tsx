@@ -44,7 +44,7 @@ const ModalShow: React.FC = () => {
         onOk={() => setModalOpen(false)}
         onCancel={() => setModalOpen(false)}
         footer=""
-        className={fullScreen ? "modalFullScreen": ""}
+        className={`glass-modal ${fullScreen ? "modalFullScreen" : ""}`}
       >
         <div className={fullScreen ? "modal-content-FullScreen" : ""} >
           <HelpHeaderControls expanded={fullScreen} handleExpand={handleFullScreen}/>
