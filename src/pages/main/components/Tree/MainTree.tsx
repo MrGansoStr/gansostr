@@ -75,6 +75,7 @@ const Node: FC<NodeProps> = ({
         <Tooltip
           open={hovered}
           overlayClassName="tree-tooltip"
+          overlayInnerStyle={{ maxWidth: 300, padding: 0 }}
           title={
             <>
               <Card
@@ -88,7 +89,6 @@ const Node: FC<NodeProps> = ({
                     </Button>
                   ) : null
                 }
-                style={{ width: 300 }}
               >
                 {info?.all_info}
               </Card>
