@@ -20,14 +20,31 @@ interface LegendItem {
   colorTypes: string[];
 }
 
-const data_legend: LegendItem[] = [
-  { name: "Yo", color: "#BB4040", icon: <UserOutlined />, colorTypes: ["me"] },
-  { name: "Experiencia", color: "#3AA6D0", icon: <FieldTimeOutlined />, colorTypes: ["exp"] },
-  { name: "Tecnologias", color: "#58C46E", icon: <PythonOutlined />, colorTypes: ["tech", "Tech"] },
-  { name: "Proyectos", color: "#F1F57C", icon: <BulbOutlined />, colorTypes: ["proy"] },
-  { name: "Modelos", color: "#D66AF7", icon: <RobotOutlined />, colorTypes: ["model"] },
-  { name: "Habilidades", color: "#80DDF7", icon: <ToolOutlined />, colorTypes: ["skill"] },
+const colorsNode = NodesJson.DataScience.colors_node as Record<
+  string,
+  { color: string }
+>;
+
+const resolveColor = (colorTypes: string[]): string => {
+  for (const ct of colorTypes) {
+    if (colorsNode[ct]?.color) return colorsNode[ct].color;
+  }
+  return "#ffffff";
+};
+
+const legendMeta: Omit<LegendItem, "color">[] = [
+  { name: "Yo", icon: <UserOutlined />, colorTypes: ["me"] },
+  { name: "Experiencia", icon: <FieldTimeOutlined />, colorTypes: ["exp"] },
+  { name: "Tecnologias", icon: <PythonOutlined />, colorTypes: ["tech", "Tech"] },
+  { name: "Proyectos", icon: <BulbOutlined />, colorTypes: ["proy"] },
+  { name: "Modelos", icon: <RobotOutlined />, colorTypes: ["model"] },
+  { name: "Habilidades", icon: <ToolOutlined />, colorTypes: ["skill"] },
 ];
+
+const data_legend: LegendItem[] = legendMeta.map((item) => ({
+  ...item,
+  color: resolveColor(item.colorTypes),
+}));
 
 const Legend = () => {
   const counts = useMemo(() => {
