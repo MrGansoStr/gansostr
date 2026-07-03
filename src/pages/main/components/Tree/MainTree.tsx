@@ -119,7 +119,7 @@ interface nodePositions {
 const LightUpdater: FC<{ state: ConnLightState }> = ({ state }) => {
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
-    const len = Math.min(state.startEnds.length, state.positions.length);
+    const len = Math.min(state.startEnds.length, state.positions.length, 8);
     for (let i = 0; i < len; i++) {
       const { s, e } = state.startEnds[i];
       const phase = (t * 0.25 + i * 0.1) % 1.0;
@@ -178,16 +178,6 @@ const Scene: FC = () => {
     <Canvas camera={{ position: [100, 100, 70], fov: 45 }}>
       <LightUpdater state={connLightState} />
 
-      <ambientLight intensity={20} />
-      <pointLight position={[60, 60, 60]} />
-      <directionalLight
-        position={[50, 50, 50]}
-        intensity={1}
-        castShadow
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
-      />
-
       {/* Nodos */}
       {nodeData.map((node, index) => (
         <Node
@@ -218,7 +208,6 @@ const Scene: FC = () => {
       }
 
       <OrbitControls />
-      <mesh castShadow receiveShadow />
     </Canvas>
   );
 };

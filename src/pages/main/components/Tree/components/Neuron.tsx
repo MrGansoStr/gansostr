@@ -2,7 +2,7 @@ import { useRef, useMemo, useEffect, FC } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
-const MAX_CONN_LIGHTS = 32;
+const MAX_CONN_LIGHTS = 8;
 
 export interface ConnLightState {
   positions: THREE.Vector3[];
@@ -45,7 +45,7 @@ const fragmentShader = /* glsl */ `
   uniform vec3 uDirLightColor;
   uniform float uDirLightIntensity;
   uniform float uAmbient;
-  uniform vec3 uConnLights[32];
+  uniform vec3 uConnLights[8];
   uniform int uConnLightCount;
   uniform vec3 uConnLightColor;
   uniform float uConnLightIntensity;
@@ -93,7 +93,7 @@ const fragmentShader = /* glsl */ `
     vec3 color = ambient + pointContrib + dirContrib;
 
     // Connection lights (moving energy pulses)
-    for (int i = 0; i < 32; i++) {
+    for (int i = 0; i < 8; i++) {
       if (i >= uConnLightCount) break;
       vec3 toLight = uConnLights[i] - vWorldPos;
       float dist = length(toLight);
@@ -179,24 +179,24 @@ const Bubble: FC<BubbleProps> = ({
       const target = hovered ? 1 : 0;
       hoverLerp.current += (target - hoverLerp.current) * Math.min(delta * 8, 1);
       matRef.current.uniforms.uHovered.value = hoverLerp.current;
-    }
-    matRef.current.uniforms.uTime.value += delta;
+      matRef.current.uniforms.uTime.value += delta;
 
-    if (connLightState) {
-      const lights = connLightState.positions;
-      const count = Math.min(lights.length, MAX_CONN_LIGHTS);
-      const uniformLights = uniforms.uConnLights.value as THREE.Vector3[];
-      for (let i = 0; i < count; i++) {
-        uniformLights[i].copy(lights[i]);
+      if (connLightState) {
+        const lights = connLightState.positions;
+        const count = Math.min(lights.length, MAX_CONN_LIGHTS);
+        const uniformLights = uniforms.uConnLights.value as THREE.Vector3[];
+        for (let i = 0; i < count; i++) {
+          uniformLights[i].copy(lights[i]);
+        }
+        uniforms.uConnLightCount.value = count;
       }
-      uniforms.uConnLightCount.value = count;
     }
   });
 
   return (
     <group scale={scale}>
       <mesh>
-        <sphereGeometry args={[1, isStatic ? 32 : 64, isStatic ? 32 : 64]} />
+        <sphereGeometry args={[1, isStatic ? 16 : 32, isStatic ? 16 : 32]} />
         <shaderMaterial
           ref={matRef}
           uniforms={uniforms}

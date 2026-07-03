@@ -49,13 +49,13 @@ const NeuronConnection: FC<ConnectionProps> = ({
     mid.z += (Math.random() - 0.5) * offset;
 
     const curve = new THREE.QuadraticBezierCurve3(surfaceStart, mid, surfaceEnd);
-    const segments = 50;
+    const segments = 32;
     const points = Array.from({ length: segments + 1 }, (_, i) =>
       curve.getPoint(i / segments)
     );
     const tubePath = new THREE.CatmullRomCurve3(points);
 
-    const numMid = 2 + Math.floor(Math.random() * 3);
+    const numMid = 1 + Math.floor(Math.random() * 2);
     const sc = brightenColor(startColor, 0.45);
     const ec = brightenColor(endColor, 0.45);
     const allT = [
@@ -101,7 +101,7 @@ const NeuronConnection: FC<ConnectionProps> = ({
   return (
     <>
       {/* Tube with color gradient (node fusion) */}
-      <Tube args={[tubePath, 64, thickness * 0.5, 8, false]}>
+      <Tube args={[tubePath, 32, thickness * 0.5, 6, false]}>
         <shaderMaterial
           ref={tubeMatRef}
           uniforms={tubeUniforms}
