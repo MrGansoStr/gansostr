@@ -10,6 +10,7 @@ import DescriptionsJson from "../../../../infoToShow/AllTreev2.json"
 import Bubble from './components/Neuron';
 import type { ConnLightState } from './components/Neuron';
 import NeuronConnection from './components/NeuronConnection';
+import './TreeTooltip.css';
 
 interface NodeProps {
   position: [number, number, number];
@@ -73,11 +74,13 @@ const Node: FC<NodeProps> = ({
       <Html position={[0, 0, 0]} center style={{ zIndex: "1", position: "absolute" }}>
         <Tooltip
           open={hovered}
+          overlayClassName="tree-tooltip"
           title={
             <>
               <Card
                 size="small"
                 title={label}
+                className="tree-tooltip-card"
                 extra={
                   info?.more_info ? (
                     <Button size="small" onClick={handleShowMore}>
