@@ -50,6 +50,7 @@ const fragmentShader = /* glsl */ `
   uniform vec3 uConnLightColor;
   uniform float uConnLightIntensity;
   uniform float uBrightness;
+  uniform float uIsStatic;
 
   varying vec3 vWorldNormal;
   varying vec3 vWorldPos;
@@ -110,8 +111,13 @@ const fragmentShader = /* glsl */ `
     color += baseColor * fresnel * 0.5 * uBrightness;
     color += baseColor * 0.35 * uBrightness;
 
+    // Static bubbles: extra brightness and solid core
+    color += baseColor * uIsStatic * 0.6;
+    color += vec3(fresnel) * uIsStatic * 0.4;
+
     // Alpha
     float alpha = mix(0.15, 0.9, fresnel);
+    alpha = mix(alpha, mix(0.55, 1.0, fresnel), uIsStatic);
     alpha = mix(alpha, alpha + 0.25, uHovered);
     alpha += sin(uTime * 1.5 + uSeed) * 0.015;
 
@@ -153,6 +159,7 @@ const Bubble: FC<BubbleProps> = ({
       uConnLightColor: { value: new THREE.Color(0xccddff) },
       uConnLightIntensity: { value: 3.0 },
       uBrightness: { value: brightness },
+      uIsStatic: { value: isStatic ? 1.0 : 0.0 },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -162,7 +169,8 @@ const Bubble: FC<BubbleProps> = ({
     uniforms.uColor.value.set(color);
     uniforms.uHoverColor.value.set(hoverColor);
     uniforms.uBrightness.value = brightness;
-  }, [color, hoverColor, brightness, uniforms]);
+    uniforms.uIsStatic.value = isStatic ? 1.0 : 0.0;
+  }, [color, hoverColor, brightness, isStatic, uniforms]);
 
   useFrame((_, delta) => {
     if (!matRef.current) return;
