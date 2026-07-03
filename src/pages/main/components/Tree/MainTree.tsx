@@ -165,13 +165,13 @@ const Scene: FC = () => {
   }, []);
 
   return (
-    <Canvas camera={{ position: [90, 90, 25], fov: 30 }}>
+    <Canvas camera={{ position: [100, 100, 70], fov: 45 }}>
       <LightUpdater state={connLightState} />
 
       <ambientLight intensity={20} />
-      <pointLight position={[20, 20, 20]} />
+      <pointLight position={[60, 60, 60]} />
       <directionalLight
-        position={[5, 5, 5]}
+        position={[50, 50, 50]}
         intensity={1}
         castShadow
         shadow-mapSize-width={1024}

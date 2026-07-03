@@ -24,24 +24,18 @@ export const gen_combination = (x: number[] = [], y: number[] = [], z: number[] 
     return {indexes: [index_x, index_y, index_z], nums: [num_x, num_y, num_z]}
 }
 
-export const gen_positions = (quantity: number = 10) => {
-    const calc_quantity = quantity * 2;
-    const calc_quantity_salt_3 = quantity * 3;
-    
-    const x: number[] = gen_coordinate(0, calc_quantity, 2);
-    const y: number[] = gen_coordinate(0, calc_quantity_salt_3, 3);
-    const z: number[] = gen_coordinate(0, calc_quantity, 2);
+export const gen_positions = (quantity: number = 10, radius: number = 40) => {
+    const positions: [number, number, number][] = [];
+    const goldenAngle = Math.PI * (3 - Math.sqrt(5));
 
-    const uniquePositions: Set<number[]> = new Set();
-    while (x.length != 0) {
-        const combinations = gen_combination(x, y, z);
-        if (!uniquePositions.has(combinations.nums)) {
-            uniquePositions.add(combinations.nums);
-            x.splice(combinations.indexes[0], 1);
-            y.splice(combinations.indexes[1], 1);
-            z.splice(combinations.indexes[2], 1);
-        }
+    for (let i = 0; i < quantity; i++) {
+        const y = 1 - (i / Math.max(quantity - 1, 1)) * 2;
+        const r = Math.sqrt(Math.max(1 - y * y, 0));
+        const theta = goldenAngle * i;
+        const x = Math.cos(theta) * r;
+        const z = Math.sin(theta) * r;
+        positions.push([x * radius, y * radius, z * radius]);
     }
 
-    return uniquePositions;
+    return positions;
 }
