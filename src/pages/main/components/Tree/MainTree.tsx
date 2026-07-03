@@ -72,6 +72,7 @@ const Node: FC<NodeProps> = ({
       {/* Tooltip con información */}
       <Html position={[0, 0, 0]} center style={{ zIndex: "1", position: "absolute" }}>
         <Tooltip
+          open={hovered}
           title={
             <>
               <Card
@@ -91,7 +92,7 @@ const Node: FC<NodeProps> = ({
             </>
           }
         >
-          <div style={{ color: 'white', borderRadius: '2rem', padding: '10px' }} />
+          <div style={{ width: 0, height: 0 }} />
         </Tooltip>
       </Html>
     </group>
