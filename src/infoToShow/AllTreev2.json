@@ -5,6 +5,7 @@
         "ds3" : {"summary": "Tecnologías y Herramientas", "all_info": "Lenguajes de programación, infraestructura y bases de datos que soportan el ciclo completo de los proyectos de datos.", "more_info": false},
         "d1" : {"summary": "Recopilación", "all_info": "Procesos y métodos para obtener datos: APIs, web scraping, sensores IoT y bases de datos de donde proviene la información.", "more_info": false},
         "d2" : {"summary": "Almacenamiento", "all_info": "Técnicas e infraestructura para persistir datos a escala: data lakes, almacenamiento en la nube y bases de datos.", "more_info": false},
+        "d3" : {"summary": "Procesamiento", "all_info": "Preparación y transformación de datos para análisis: limpieza, conversión de formatos (ETL) y normalización para que los modelos y visualizaciones sean confiables.", "more_info": false},
         "d1a" : {"summary": "APIs", "all_info": "Interfaces de programación para consumir y exponer datos entre servicios de forma estructurada (REST, WebSockets).", "more_info": false},
         "d1b" : {"summary": "WebScraping", "all_info": "Técnicas de extracción automática de datos desde sitios web para construir datasets propios.", "more_info": false},
         "d1d" : {"summary": "Bases De Datos", "all_info": "Sistemas de almacenamiento estructurado de datos, divididos en modelos relacionales (SQL) y no relacionales (NoSQL).", "more_info": false},
