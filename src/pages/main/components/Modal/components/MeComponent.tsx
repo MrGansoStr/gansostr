@@ -23,28 +23,28 @@ const MeComponent = () => {
       </div>
       <div style={stylesAllMoreInfo.socialContainer}>
         <span>
-          <LinkedinOutlined/>
-        <a
-          href="https://www.linkedin.com/in/carlos-huanca-newstr/"
-          target="_blank"
-          style={stylesAllMoreInfo.socialLink}
-        >
-          LinkedIn
-        </a>
-          </span>
+          <LinkedinOutlined />
+          <a
+            href="https://www.linkedin.com/in/carlos-huanca-newstr/"
+            target="_blank"
+            style={stylesAllMoreInfo.socialLink}
+          >
+            LinkedIn
+          </a>
+        </span>
         <span>
           <CustomGithubIcon />
-        <a
-          href="https://github.com/MrGansoStr/"
-          target="_blank"
-          style={stylesAllMoreInfo.socialLink}
+          <a
+            href="https://github.com/MrGansoStr/"
+            target="_blank"
+            style={stylesAllMoreInfo.socialLink}
           >
-          GitHub
-        </a>
-          </span>
+            GitHub
+          </a>
+        </span>
       </div>
       <div style={stylesAllMoreInfo.socialContainer}>
-        <a href="/CV_DEV.pdf" target="_blank" style={stylesAllMoreInfo.socialLink}>Curriculum Vitae</a>
+        <a href="/CV_DEV_A.pdf" target="_blank" style={stylesAllMoreInfo.socialLink}>Curriculum Vitae</a>
       </div>
     </GenericBox>
   );
