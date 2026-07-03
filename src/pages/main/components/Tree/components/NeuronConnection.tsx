@@ -118,15 +118,21 @@ const NeuronConnection: FC<ConnectionProps> = ({
             uniform float uTime;
             varying vec2 vUv;
 
+            float hash(float n) {
+              return fract(sin(n * 12.9898) * 43758.5453);
+            }
+
             void main() {
               // Color fusion: gradient start -> end
               vec3 color = mix(uStartColor, uEndColor, vUv.x);
 
-              // Flowing energy particles
+              // Flowing energy particles (slow, random per-particle)
               float flow = 0.0;
               for (int i = 0; i < 4; i++) {
-                float offset = float(i) * 0.25;
-                float pos = fract(uTime * 0.25 + offset);
+                float fi = float(i);
+                float speed = 0.06 + hash(fi) * 0.10;
+                float offset = hash(fi + 7.3);
+                float pos = fract(uTime * speed + offset);
                 float particle = smoothstep(0.05, 0.0, abs(vUv.x - pos));
                 flow += particle;
               }
