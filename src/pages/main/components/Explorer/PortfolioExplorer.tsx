@@ -41,6 +41,30 @@ export default function PortfolioExplorer() {
     return () => observer.disconnect();
   }, [view]);
 
+  useEffect(() => {
+    const element = viewport.current;
+    if (!element) return;
+
+    function handleWheel(event: WheelEvent) {
+      event.preventDefault();
+      if (!event.deltaY) return;
+      const stage = element!.querySelector<HTMLElement>('.graph-stage');
+      if (!stage) return;
+      const delta = event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? element!.clientHeight : 1);
+      const nextZoom = Math.max(.75, Math.min(3, zoom * Math.exp(-Math.max(-500, Math.min(500, delta)) * .002)));
+      const ratio = nextZoom / zoom;
+      const bounds = stage.getBoundingClientRect();
+      const offsetX = event.clientX - (bounds.left + bounds.width / 2);
+      const offsetY = event.clientY - (bounds.top + bounds.height / 2);
+      setPan(current => ({ x: current.x + offsetX * (1 - ratio), y: current.y + offsetY * (1 - ratio) }));
+      setZoom(nextZoom);
+      drag.current = null;
+    }
+
+    element.addEventListener('wheel', handleWheel, { passive: false });
+    return () => element.removeEventListener('wheel', handleWheel);
+  }, [view, zoom]);
+
   function choose(id: string) {
     setSelectedId(id);
     setHoveredId(null);
